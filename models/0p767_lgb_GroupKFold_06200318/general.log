@@ -1,0 +1,28 @@
+[2020-06-20 03:18:26] - lgb_GroupKFold_06200318 - train_x shape: (19720, 203)
+[2020-06-20 03:18:26] - lgb_GroupKFold_06200318 - train_y shape: (19720,)
+[2020-06-20 03:18:26] - lgb_GroupKFold_06200318 - start training cv
+[2020-06-20 03:18:26] - lgb_GroupKFold_06200318 - cv method: GroupKFold - group: categoryId - stratify: hoge
+[2020-06-20 03:18:26] - lgb_GroupKFold_06200318 fold 0 - start training
+[2020-06-20 03:19:40] - lgb_GroupKFold_06200318 fold 0 - end training - score 0.82372842011261
+[2020-06-20 03:19:41] - lgb_GroupKFold_06200318 fold 1 - start training
+[2020-06-20 03:20:38] - lgb_GroupKFold_06200318 fold 1 - end training - score 1.116710252287482
+[2020-06-20 03:20:39] - lgb_GroupKFold_06200318 fold 2 - start training
+[2020-06-20 03:21:26] - lgb_GroupKFold_06200318 fold 2 - end training - score 0.8330718837184632
+[2020-06-20 03:21:27] - lgb_GroupKFold_06200318 fold 3 - start training
+[2020-06-20 03:22:34] - lgb_GroupKFold_06200318 fold 3 - end training - score 0.976676429693708
+[2020-06-20 03:22:36] - lgb_GroupKFold_06200318 fold 4 - start training
+[2020-06-20 03:24:11] - lgb_GroupKFold_06200318 fold 4 - end training - score 0.940863947155574
+[2020-06-20 03:24:13] - lgb_GroupKFold_06200318 - start prediction cv
+[2020-06-20 03:24:13] - lgb_GroupKFold_06200318 - start prediction fold:0
+[2020-06-20 03:24:15] - lgb_GroupKFold_06200318 - end prediction fold:0
+[2020-06-20 03:24:15] - lgb_GroupKFold_06200318 - start prediction fold:1
+[2020-06-20 03:24:17] - lgb_GroupKFold_06200318 - end prediction fold:1
+[2020-06-20 03:24:17] - lgb_GroupKFold_06200318 - start prediction fold:2
+[2020-06-20 03:24:19] - lgb_GroupKFold_06200318 - end prediction fold:2
+[2020-06-20 03:24:19] - lgb_GroupKFold_06200318 - start prediction fold:3
+[2020-06-20 03:24:21] - lgb_GroupKFold_06200318 - end prediction fold:3
+[2020-06-20 03:24:21] - lgb_GroupKFold_06200318 - start prediction fold:4
+[2020-06-20 03:24:24] - lgb_GroupKFold_06200318 - end prediction fold:4
+[2020-06-20 03:24:24] - lgb_GroupKFold_06200318 - end prediction cv
+[2020-06-20 03:24:24] - lgb_GroupKFold_06200318 - start create submission
+[2020-06-20 03:24:24] - lgb_GroupKFold_06200318 - end create submission

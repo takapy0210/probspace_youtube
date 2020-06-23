@@ -1,0 +1,746 @@
+[2020-06-20 01:19:16] - Start: main
+[2020-06-20 01:19:16] - ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+[2020-06-20 01:19:16] - Start: load_data
+[2020-06-20 01:19:16] - End: load_data done in 0.64 s
+[2020-06-20 01:19:16] - Start: get_title
+[2020-06-20 01:19:16] - End: get_title done in 0.03 s
+[2020-06-20 01:19:16] - Start: get_published
+[2020-06-20 01:19:16] - End: get_published done in 0.09 s
+[2020-06-20 01:19:16] - Start: get_channel
+[2020-06-20 01:19:16] - End: get_channel done in 0.04 s
+[2020-06-20 01:19:16] - Start: get_collection
+[2020-06-20 01:19:17] - End: get_collection done in 0.12 s
+[2020-06-20 01:19:17] - Start: get_tag
+[2020-06-20 01:19:22] - End: get_tag done in 5.17 s
+[2020-06-20 01:19:22] - Start: get_like_dislike_comment
+[2020-06-20 01:19:22] - End: get_like_dislike_comment done in 0.01 s
+[2020-06-20 01:19:22] - Start: get_description
+[2020-06-20 01:19:22] - End: get_description done in 0.18 s
+[2020-06-20 01:19:22] - Start: get_boolean
+[2020-06-20 01:19:22] - End: get_boolean done in 0.00 s
+[2020-06-20 01:19:22] - Start: get_delta
+[2020-06-20 01:19:23] - End: get_delta done in 1.05 s
+[2020-06-20 01:19:23] - Start: get_language
+[2020-06-20 01:19:30] - End: get_language done in 7.45 s
+[2020-06-20 01:19:30] - Start: get_in_word
+[2020-06-20 01:19:31] - End: get_in_word done in 0.48 s
+[2020-06-20 01:19:31] - Start: get_freq
+[2020-06-20 01:19:31] - End: get_freq done in 0.02 s
+[2020-06-20 01:19:31] - Start: get_agg_features
+[2020-06-20 01:19:31] - End: get_agg_features done in 0.31 s
+[2020-06-20 01:19:31] - Start: get_agg_features
+[2020-06-20 01:19:32] - End: get_agg_features done in 0.35 s
+[2020-06-20 01:19:32] - Start: get_agg_features
+[2020-06-20 01:19:32] - End: get_agg_features done in 0.35 s
+[2020-06-20 01:19:32] - Save train test
+[2020-06-20 01:19:32] - train shape: (19720, 134), test shape, (29582, 134)
+[2020-06-20 01:19:32] - End: main done in 16.68 s
+[2020-06-20 01:26:54] - Start: main
+[2020-06-20 01:26:54] - ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+[2020-06-20 01:26:54] - Start: load_data
+[2020-06-20 01:26:55] - End: load_data done in 0.68 s
+[2020-06-20 01:26:55] - Start: get_title
+[2020-06-20 01:26:55] - End: get_title done in 0.02 s
+[2020-06-20 01:26:55] - Start: get_published
+[2020-06-20 01:26:55] - End: get_published done in 0.08 s
+[2020-06-20 01:26:55] - Start: get_channel
+[2020-06-20 01:26:55] - End: get_channel done in 0.04 s
+[2020-06-20 01:26:55] - Start: get_collection
+[2020-06-20 01:26:55] - End: get_collection done in 0.12 s
+[2020-06-20 01:26:55] - Start: get_tag
+[2020-06-20 01:27:01] - End: get_tag done in 5.39 s
+[2020-06-20 01:27:01] - Start: get_like_dislike_comment
+[2020-06-20 01:27:01] - End: get_like_dislike_comment done in 0.01 s
+[2020-06-20 01:27:01] - Start: get_description
+[2020-06-20 01:27:01] - End: get_description done in 0.19 s
+[2020-06-20 01:27:01] - Start: get_boolean
+[2020-06-20 01:27:01] - End: get_boolean done in 0.00 s
+[2020-06-20 01:27:01] - Start: get_delta
+[2020-06-20 01:27:02] - End: get_delta done in 1.07 s
+[2020-06-20 01:27:02] - Start: get_language
+[2020-06-20 01:27:10] - End: get_language done in 7.87 s
+[2020-06-20 01:27:10] - Start: get_in_word
+[2020-06-20 01:27:10] - End: get_in_word done in 0.50 s
+[2020-06-20 01:27:10] - Start: get_freq
+[2020-06-20 01:27:10] - End: get_freq done in 0.02 s
+[2020-06-20 01:27:10] - Start: get_agg_features
+[2020-06-20 01:27:11] - End: get_agg_features done in 0.34 s
+[2020-06-20 01:27:11] - Start: get_agg_features
+[2020-06-20 01:27:11] - End: get_agg_features done in 0.36 s
+[2020-06-20 01:27:11] - Start: get_agg_features
+[2020-06-20 01:27:11] - End: get_agg_features done in 0.36 s
+[2020-06-20 01:27:11] - Save train test
+[2020-06-20 01:27:12] - train shape: (19720, 134), test shape, (29582, 134)
+[2020-06-20 01:27:12] - End: main done in 17.45 s
+[2020-06-20 02:19:54] - Start: main
+[2020-06-20 02:19:54] - ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+[2020-06-20 02:19:54] - Start: load_data
+[2020-06-20 02:19:55] - End: load_data done in 0.69 s
+[2020-06-20 02:19:55] - Start: get_title
+[2020-06-20 02:19:55] - End: get_title done in 0.03 s
+[2020-06-20 02:19:55] - Start: get_published
+[2020-06-20 02:19:55] - End: get_published done in 0.08 s
+[2020-06-20 02:19:55] - Start: get_channel
+[2020-06-20 02:19:55] - End: get_channel done in 0.04 s
+[2020-06-20 02:19:55] - Start: get_collection
+[2020-06-20 02:19:55] - End: get_collection done in 0.12 s
+[2020-06-20 02:19:55] - Start: get_tag
+[2020-06-20 02:20:01] - End: get_tag done in 5.44 s
+[2020-06-20 02:20:01] - Start: get_like_dislike_comment
+[2020-06-20 02:20:01] - End: get_like_dislike_comment done in 0.01 s
+[2020-06-20 02:20:01] - Start: get_description
+[2020-06-20 02:20:01] - End: get_description done in 0.19 s
+[2020-06-20 02:20:01] - Start: get_boolean
+[2020-06-20 02:20:01] - End: get_boolean done in 0.00 s
+[2020-06-20 02:20:01] - Start: get_delta
+[2020-06-20 02:20:02] - End: get_delta done in 1.17 s
+[2020-06-20 02:20:02] - Start: get_language
+[2020-06-20 02:20:10] - End: get_language done in 7.82 s
+[2020-06-20 02:20:10] - Start: get_in_word
+[2020-06-20 02:20:11] - End: get_in_word done in 0.49 s
+[2020-06-20 02:20:11] - Start: get_freq
+[2020-06-20 02:20:11] - End: get_freq done in 0.02 s
+[2020-06-20 02:20:11] - Start: get_agg_features
+[2020-06-20 02:20:11] - End: get_agg_features done in 0.33 s
+[2020-06-20 02:20:11] - Start: get_agg_features
+[2020-06-20 02:20:11] - End: get_agg_features done in 0.36 s
+[2020-06-20 02:20:11] - Start: get_agg_features
+[2020-06-20 02:20:12] - End: get_agg_features done in 0.38 s
+[2020-06-20 02:20:12] - Save train test
+[2020-06-20 02:20:12] - train shape: (19720, 134), test shape, (29582, 134)
+[2020-06-20 02:20:12] - End: main done in 17.59 s
+[2020-06-20 02:50:38] - Start: main
+[2020-06-20 02:50:38] - ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+[2020-06-20 02:50:38] - Start: load_data
+[2020-06-20 02:50:39] - End: load_data done in 0.66 s
+[2020-06-20 02:50:39] - Start: get_title
+[2020-06-20 02:50:39] - End: get_title done in 0.02 s
+[2020-06-20 02:50:39] - Start: get_published
+[2020-06-20 02:50:39] - End: get_published done in 0.08 s
+[2020-06-20 02:50:39] - Start: get_channel
+[2020-06-20 02:50:39] - End: get_channel done in 0.04 s
+[2020-06-20 02:50:39] - Start: get_collection
+[2020-06-20 02:50:39] - End: get_collection done in 0.11 s
+[2020-06-20 02:50:39] - Start: get_tag
+[2020-06-20 02:50:45] - End: get_tag done in 5.39 s
+[2020-06-20 02:50:45] - Start: get_like_dislike_comment
+[2020-06-20 02:50:45] - End: get_like_dislike_comment done in 0.02 s
+[2020-06-20 02:50:45] - Start: get_description
+[2020-06-20 02:50:45] - End: get_description done in 0.19 s
+[2020-06-20 02:50:45] - Start: get_boolean
+[2020-06-20 02:50:45] - End: get_boolean done in 0.00 s
+[2020-06-20 02:50:45] - Start: get_delta
+[2020-06-20 02:50:46] - End: get_delta done in 1.11 s
+[2020-06-20 02:50:46] - Start: get_language
+[2020-06-20 02:50:54] - End: get_language done in 7.44 s
+[2020-06-20 02:50:54] - Start: get_in_word
+[2020-06-20 02:50:54] - End: get_in_word done in 0.48 s
+[2020-06-20 02:50:54] - Start: get_freq
+[2020-06-20 02:50:54] - End: get_freq done in 0.02 s
+[2020-06-20 02:50:54] - Start: get_agg_features
+[2020-06-20 02:50:54] - End: get_agg_features done in 0.33 s
+[2020-06-20 02:50:54] - Start: get_agg_features
+[2020-06-20 02:50:55] - End: get_agg_features done in 0.38 s
+[2020-06-20 02:50:55] - Start: get_agg_features
+[2020-06-20 02:50:55] - End: get_agg_features done in 0.38 s
+[2020-06-20 02:50:55] - Start: get_agg_features
+[2020-06-20 02:55:44] - Start: main
+[2020-06-20 02:55:44] - ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+[2020-06-20 02:55:44] - Start: load_data
+[2020-06-20 02:55:45] - End: load_data done in 0.68 s
+[2020-06-20 02:55:45] - Start: get_title
+[2020-06-20 02:55:45] - End: get_title done in 0.02 s
+[2020-06-20 02:55:45] - Start: get_published
+[2020-06-20 02:55:45] - End: get_published done in 0.08 s
+[2020-06-20 02:55:45] - Start: get_channel
+[2020-06-20 02:55:45] - End: get_channel done in 0.04 s
+[2020-06-20 02:55:45] - Start: get_collection
+[2020-06-20 02:55:45] - End: get_collection done in 0.12 s
+[2020-06-20 02:55:45] - Start: get_tag
+[2020-06-20 02:55:51] - End: get_tag done in 5.39 s
+[2020-06-20 02:55:51] - Start: get_like_dislike_comment
+[2020-06-20 02:55:51] - End: get_like_dislike_comment done in 0.01 s
+[2020-06-20 02:55:51] - Start: get_description
+[2020-06-20 02:55:51] - End: get_description done in 0.19 s
+[2020-06-20 02:55:51] - Start: get_boolean
+[2020-06-20 02:55:51] - End: get_boolean done in 0.00 s
+[2020-06-20 02:55:51] - Start: get_delta
+[2020-06-20 02:55:52] - End: get_delta done in 1.08 s
+[2020-06-20 02:55:52] - Start: get_language
+[2020-06-20 02:56:00] - End: get_language done in 7.53 s
+[2020-06-20 02:56:00] - Start: get_in_word
+[2020-06-20 02:56:00] - End: get_in_word done in 0.53 s
+[2020-06-20 02:56:00] - Start: get_freq
+[2020-06-20 02:56:00] - End: get_freq done in 0.01 s
+[2020-06-20 02:56:00] - Start: get_agg_features
+[2020-06-20 02:56:01] - End: get_agg_features done in 0.34 s
+[2020-06-20 02:56:01] - Start: get_agg_features
+[2020-06-20 02:56:01] - End: get_agg_features done in 0.38 s
+[2020-06-20 02:56:01] - Start: get_agg_features
+[2020-06-20 02:56:01] - End: get_agg_features done in 0.44 s
+[2020-06-20 02:56:01] - Start: get_agg_features
+[2020-06-20 02:56:41] - Start: main
+[2020-06-20 02:56:41] - ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+[2020-06-20 02:56:41] - Start: load_data
+[2020-06-20 02:56:42] - End: load_data done in 0.76 s
+[2020-06-20 02:56:42] - Start: get_title
+[2020-06-20 02:56:42] - End: get_title done in 0.03 s
+[2020-06-20 02:56:42] - Start: get_published
+[2020-06-20 02:56:42] - End: get_published done in 0.09 s
+[2020-06-20 02:56:42] - Start: get_channel
+[2020-06-20 02:56:42] - End: get_channel done in 0.05 s
+[2020-06-20 02:56:42] - Start: get_collection
+[2020-06-20 02:56:42] - End: get_collection done in 0.12 s
+[2020-06-20 02:56:42] - Start: get_tag
+[2020-06-20 02:56:48] - End: get_tag done in 5.47 s
+[2020-06-20 02:56:48] - Start: get_like_dislike_comment
+[2020-06-20 02:56:48] - End: get_like_dislike_comment done in 0.01 s
+[2020-06-20 02:56:48] - Start: get_description
+[2020-06-20 02:56:48] - End: get_description done in 0.21 s
+[2020-06-20 02:56:48] - Start: get_boolean
+[2020-06-20 02:56:48] - End: get_boolean done in 0.00 s
+[2020-06-20 02:56:48] - Start: get_delta
+[2020-06-20 02:56:49] - End: get_delta done in 1.07 s
+[2020-06-20 02:56:49] - Start: get_language
+[2020-06-20 02:56:57] - End: get_language done in 7.41 s
+[2020-06-20 02:56:57] - Start: get_in_word
+[2020-06-20 02:56:57] - End: get_in_word done in 0.49 s
+[2020-06-20 02:56:57] - Start: get_freq
+[2020-06-20 02:56:57] - End: get_freq done in 0.01 s
+[2020-06-20 02:56:57] - Start: get_agg_features
+[2020-06-20 02:56:57] - End: get_agg_features done in 0.32 s
+[2020-06-20 02:56:57] - Start: get_agg_features
+[2020-06-20 02:56:58] - End: get_agg_features done in 0.38 s
+[2020-06-20 02:56:58] - Start: get_agg_features
+[2020-06-20 02:56:58] - End: get_agg_features done in 0.39 s
+[2020-06-20 02:56:58] - Start: get_agg_features
+[2020-06-20 02:57:22] - Start: main
+[2020-06-20 02:57:22] - ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+[2020-06-20 02:57:22] - Start: load_data
+[2020-06-20 02:57:23] - End: load_data done in 0.67 s
+[2020-06-20 02:57:23] - Start: get_title
+[2020-06-20 02:57:23] - End: get_title done in 0.02 s
+[2020-06-20 02:57:23] - Start: get_published
+[2020-06-20 02:57:23] - End: get_published done in 0.08 s
+[2020-06-20 02:57:23] - Start: get_channel
+[2020-06-20 02:57:23] - End: get_channel done in 0.04 s
+[2020-06-20 02:57:23] - Start: get_collection
+[2020-06-20 02:57:23] - End: get_collection done in 0.11 s
+[2020-06-20 02:57:23] - Start: get_tag
+[2020-06-20 02:57:28] - End: get_tag done in 5.40 s
+[2020-06-20 02:57:28] - Start: get_like_dislike_comment
+[2020-06-20 02:57:28] - End: get_like_dislike_comment done in 0.01 s
+[2020-06-20 02:57:28] - Start: get_description
+[2020-06-20 02:57:29] - End: get_description done in 0.19 s
+[2020-06-20 02:57:29] - Start: get_boolean
+[2020-06-20 02:57:29] - End: get_boolean done in 0.00 s
+[2020-06-20 02:57:29] - Start: get_delta
+[2020-06-20 02:57:30] - End: get_delta done in 1.11 s
+[2020-06-20 02:57:30] - Start: get_language
+[2020-06-20 02:57:37] - End: get_language done in 7.48 s
+[2020-06-20 02:57:37] - Start: get_in_word
+[2020-06-20 02:57:38] - End: get_in_word done in 0.49 s
+[2020-06-20 02:57:38] - Start: get_freq
+[2020-06-20 02:57:38] - End: get_freq done in 0.02 s
+[2020-06-20 02:57:38] - Start: get_agg_features
+[2020-06-20 02:57:38] - End: get_agg_features done in 0.30 s
+[2020-06-20 02:57:38] - Start: get_agg_features
+[2020-06-20 02:57:38] - End: get_agg_features done in 0.35 s
+[2020-06-20 02:57:38] - Start: get_agg_features
+[2020-06-20 02:57:39] - End: get_agg_features done in 0.38 s
+[2020-06-20 02:57:39] - Start: get_agg_features
+[2020-06-20 02:58:00] - Start: main
+[2020-06-20 02:58:00] - ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+[2020-06-20 02:58:00] - Start: load_data
+[2020-06-20 02:58:01] - End: load_data done in 0.67 s
+[2020-06-20 02:58:01] - Start: get_title
+[2020-06-20 02:58:01] - End: get_title done in 0.03 s
+[2020-06-20 02:58:01] - Start: get_published
+[2020-06-20 02:58:01] - End: get_published done in 0.08 s
+[2020-06-20 02:58:01] - Start: get_channel
+[2020-06-20 02:58:01] - End: get_channel done in 0.04 s
+[2020-06-20 02:58:01] - Start: get_collection
+[2020-06-20 02:58:01] - End: get_collection done in 0.12 s
+[2020-06-20 02:58:01] - Start: get_tag
+[2020-06-20 02:58:06] - End: get_tag done in 5.22 s
+[2020-06-20 02:58:06] - Start: get_like_dislike_comment
+[2020-06-20 02:58:06] - End: get_like_dislike_comment done in 0.01 s
+[2020-06-20 02:58:06] - Start: get_description
+[2020-06-20 02:58:06] - End: get_description done in 0.21 s
+[2020-06-20 02:58:06] - Start: get_boolean
+[2020-06-20 02:58:06] - End: get_boolean done in 0.00 s
+[2020-06-20 02:58:06] - Start: get_delta
+[2020-06-20 02:58:07] - End: get_delta done in 1.06 s
+[2020-06-20 02:58:07] - Start: get_language
+[2020-06-20 02:58:15] - End: get_language done in 7.59 s
+[2020-06-20 02:58:15] - Start: get_in_word
+[2020-06-20 02:58:16] - End: get_in_word done in 0.49 s
+[2020-06-20 02:58:16] - Start: get_freq
+[2020-06-20 02:58:16] - End: get_freq done in 0.02 s
+[2020-06-20 02:58:16] - Start: get_agg_features
+[2020-06-20 02:58:16] - End: get_agg_features done in 0.30 s
+[2020-06-20 02:58:16] - Start: get_agg_features
+[2020-06-20 02:58:16] - End: get_agg_features done in 0.35 s
+[2020-06-20 02:58:16] - Start: get_agg_features
+[2020-06-20 02:58:17] - End: get_agg_features done in 0.39 s
+[2020-06-20 02:58:17] - Start: get_agg_features
+[2020-06-20 02:58:57] - Start: main
+[2020-06-20 02:58:57] - ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+[2020-06-20 02:58:57] - Start: load_data
+[2020-06-20 02:58:58] - End: load_data done in 0.67 s
+[2020-06-20 02:58:58] - Start: get_title
+[2020-06-20 02:58:58] - End: get_title done in 0.03 s
+[2020-06-20 02:58:58] - Start: get_published
+[2020-06-20 02:58:58] - End: get_published done in 0.08 s
+[2020-06-20 02:58:58] - Start: get_channel
+[2020-06-20 02:58:58] - End: get_channel done in 0.04 s
+[2020-06-20 02:58:58] - Start: get_collection
+[2020-06-20 02:58:58] - End: get_collection done in 0.12 s
+[2020-06-20 02:58:58] - Start: get_tag
+[2020-06-20 02:59:04] - End: get_tag done in 5.33 s
+[2020-06-20 02:59:04] - Start: get_like_dislike_comment
+[2020-06-20 02:59:04] - End: get_like_dislike_comment done in 0.02 s
+[2020-06-20 02:59:04] - Start: get_description
+[2020-06-20 02:59:04] - End: get_description done in 0.19 s
+[2020-06-20 02:59:04] - Start: get_boolean
+[2020-06-20 02:59:04] - End: get_boolean done in 0.00 s
+[2020-06-20 02:59:04] - Start: get_delta
+[2020-06-20 02:59:05] - End: get_delta done in 1.05 s
+[2020-06-20 02:59:05] - Start: get_language
+[2020-06-20 02:59:12] - End: get_language done in 7.41 s
+[2020-06-20 02:59:12] - Start: get_in_word
+[2020-06-20 02:59:13] - End: get_in_word done in 0.48 s
+[2020-06-20 02:59:13] - Start: get_freq
+[2020-06-20 02:59:13] - End: get_freq done in 0.02 s
+[2020-06-20 02:59:13] - Start: get_agg_features
+[2020-06-20 02:59:13] - End: get_agg_features done in 0.42 s
+[2020-06-20 02:59:13] - Start: get_agg_features
+[2020-06-20 02:59:14] - End: get_agg_features done in 0.46 s
+[2020-06-20 02:59:14] - Start: get_agg_features
+[2020-06-20 02:59:14] - End: get_agg_features done in 0.51 s
+[2020-06-20 02:59:14] - Start: get_agg_features
+[2020-06-20 03:00:36] - Start: main
+[2020-06-20 03:00:36] - ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+[2020-06-20 03:00:36] - Start: load_data
+[2020-06-20 03:00:37] - End: load_data done in 0.67 s
+[2020-06-20 03:00:37] - Start: get_title
+[2020-06-20 03:00:37] - End: get_title done in 0.03 s
+[2020-06-20 03:00:37] - Start: get_published
+[2020-06-20 03:00:37] - End: get_published done in 0.09 s
+[2020-06-20 03:00:37] - Start: get_channel
+[2020-06-20 03:00:37] - End: get_channel done in 0.04 s
+[2020-06-20 03:00:37] - Start: get_collection
+[2020-06-20 03:00:37] - End: get_collection done in 0.12 s
+[2020-06-20 03:00:37] - Start: get_tag
+[2020-06-20 03:00:43] - End: get_tag done in 5.33 s
+[2020-06-20 03:00:43] - Start: get_like_dislike_comment
+[2020-06-20 03:00:43] - End: get_like_dislike_comment done in 0.01 s
+[2020-06-20 03:00:43] - Start: get_description
+[2020-06-20 03:00:43] - End: get_description done in 0.18 s
+[2020-06-20 03:00:43] - Start: get_boolean
+[2020-06-20 03:00:43] - End: get_boolean done in 0.00 s
+[2020-06-20 03:00:43] - Start: get_delta
+[2020-06-20 03:00:44] - End: get_delta done in 1.08 s
+[2020-06-20 03:00:44] - Start: get_language
+[2020-06-20 03:00:51] - End: get_language done in 7.41 s
+[2020-06-20 03:00:51] - Start: get_in_word
+[2020-06-20 03:00:52] - End: get_in_word done in 0.48 s
+[2020-06-20 03:00:52] - Start: get_freq
+[2020-06-20 03:00:52] - End: get_freq done in 0.01 s
+[2020-06-20 03:00:52] - Start: get_agg_features
+[2020-06-20 03:00:52] - End: get_agg_features done in 0.32 s
+[2020-06-20 03:00:52] - Start: get_agg_features
+[2020-06-20 03:00:53] - End: get_agg_features done in 0.36 s
+[2020-06-20 03:00:53] - Start: get_agg_features
+[2020-06-20 03:00:53] - End: get_agg_features done in 0.41 s
+[2020-06-20 03:00:53] - Start: get_agg_features
+[2020-06-20 03:00:54] - End: get_agg_features done in 0.44 s
+[2020-06-20 03:00:54] - Start: get_agg_features
+[2020-06-20 03:00:54] - End: get_agg_features done in 0.50 s
+[2020-06-20 03:00:54] - Start: get_agg_features
+[2020-06-20 03:00:55] - End: get_agg_features done in 0.54 s
+[2020-06-20 03:00:55] - Save train test
+[2020-06-20 03:00:55] - train shape: (19720, 215), test shape, (29582, 215)
+[2020-06-20 03:00:55] - End: main done in 18.54 s
+[2020-06-20 11:05:27] - Start: main
+[2020-06-20 11:05:27] - ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+[2020-06-20 11:05:27] - Start: load_data
+[2020-06-20 11:05:28] - End: load_data done in 0.66 s
+[2020-06-20 11:05:28] - Start: get_title
+[2020-06-20 11:05:28] - End: get_title done in 0.03 s
+[2020-06-20 11:05:28] - Start: get_published
+[2020-06-20 11:05:28] - End: get_published done in 0.10 s
+[2020-06-20 11:05:28] - Start: get_channel
+[2020-06-20 11:05:28] - End: get_channel done in 0.04 s
+[2020-06-20 11:05:28] - Start: get_collection
+[2020-06-20 11:05:28] - End: get_collection done in 0.11 s
+[2020-06-20 11:05:28] - Start: get_tag
+[2020-06-20 11:05:34] - End: get_tag done in 5.27 s
+[2020-06-20 11:05:34] - Start: get_like_dislike_comment
+[2020-06-20 11:05:34] - End: get_like_dislike_comment done in 0.01 s
+[2020-06-20 11:05:34] - Start: get_description
+[2020-06-20 11:05:34] - End: get_description done in 0.19 s
+[2020-06-20 11:05:34] - Start: get_boolean
+[2020-06-20 11:05:34] - End: get_boolean done in 0.00 s
+[2020-06-20 11:05:34] - Start: get_delta
+[2020-06-20 11:05:35] - End: get_delta done in 1.07 s
+[2020-06-20 11:05:35] - Start: get_language
+[2020-06-20 11:05:42] - End: get_language done in 7.46 s
+[2020-06-20 11:05:42] - Start: get_in_word
+[2020-06-20 11:05:43] - End: get_in_word done in 0.48 s
+[2020-06-20 11:05:43] - Start: get_freq
+[2020-06-20 11:05:43] - End: get_freq done in 0.02 s
+[2020-06-20 11:05:43] - Start: get_agg_features
+[2020-06-20 11:05:43] - End: get_agg_features done in 0.31 s
+[2020-06-20 11:05:43] - Start: get_agg_features
+[2020-06-20 11:05:43] - End: get_agg_features done in 0.35 s
+[2020-06-20 11:05:43] - Start: get_agg_features
+[2020-06-20 11:05:44] - End: get_agg_features done in 0.36 s
+[2020-06-20 11:05:44] - Start: get_agg_features
+[2020-06-20 11:05:44] - End: get_agg_features done in 0.40 s
+[2020-06-20 11:05:44] - Start: get_agg_features
+[2020-06-20 11:05:45] - End: get_agg_features done in 0.48 s
+[2020-06-20 11:05:45] - Start: get_agg_features
+[2020-06-20 11:05:45] - End: get_agg_features done in 0.53 s
+[2020-06-20 11:05:45] - Start: get_agg_features
+[2020-06-20 11:05:46] - End: get_agg_features done in 0.61 s
+[2020-06-20 11:05:46] - Start: get_agg_features
+[2020-06-20 11:05:46] - End: get_agg_features done in 0.66 s
+[2020-06-20 11:05:46] - Start: get_agg_features
+[2020-06-20 11:05:47] - End: get_agg_features done in 0.72 s
+[2020-06-20 11:05:47] - Start: get_agg_features
+[2020-06-20 11:05:48] - End: get_agg_features done in 0.76 s
+[2020-06-20 11:05:48] - Save train test
+[2020-06-20 11:05:48] - train shape: (19720, 295), test shape, (29582, 295)
+[2020-06-20 11:05:48] - End: main done in 21.19 s
+[2020-06-20 22:14:57] - Start: main
+[2020-06-20 22:14:57] - ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+[2020-06-20 22:14:57] - Start: load_data
+[2020-06-20 22:14:58] - End: load_data done in 0.72 s
+[2020-06-20 22:14:58] - Start: get_title
+[2020-06-20 22:14:58] - End: get_title done in 0.03 s
+[2020-06-20 22:14:58] - Start: get_published
+[2020-06-20 22:14:58] - End: get_published done in 0.08 s
+[2020-06-20 22:14:58] - Start: get_channel
+[2020-06-20 22:14:58] - End: get_channel done in 0.04 s
+[2020-06-20 22:14:58] - Start: get_collection
+[2020-06-20 22:14:58] - End: get_collection done in 0.12 s
+[2020-06-20 22:14:58] - Start: get_tag
+[2020-06-20 22:15:04] - End: get_tag done in 5.37 s
+[2020-06-20 22:15:04] - Start: get_like_dislike_comment
+[2020-06-20 22:15:04] - End: get_like_dislike_comment done in 0.01 s
+[2020-06-20 22:15:04] - Start: get_description
+[2020-06-20 22:15:04] - End: get_description done in 0.19 s
+[2020-06-20 22:15:04] - Start: get_boolean
+[2020-06-20 22:15:04] - End: get_boolean done in 0.00 s
+[2020-06-20 22:15:04] - Start: get_delta
+[2020-06-20 22:15:05] - End: get_delta done in 1.09 s
+[2020-06-20 22:15:05] - Start: get_language
+[2020-06-20 22:15:13] - End: get_language done in 7.69 s
+[2020-06-20 22:15:13] - Start: get_in_word
+[2020-06-20 22:15:13] - End: get_in_word done in 0.48 s
+[2020-06-20 22:15:13] - Start: get_freq
+[2020-06-20 22:15:13] - End: get_freq done in 0.02 s
+[2020-06-20 22:15:13] - Start: get_agg_features
+[2020-06-20 22:15:14] - End: get_agg_features done in 0.32 s
+[2020-06-20 22:15:14] - Start: get_agg_features
+[2020-06-20 22:15:14] - End: get_agg_features done in 0.35 s
+[2020-06-20 22:15:14] - Start: get_agg_features
+[2020-06-20 22:15:14] - End: get_agg_features done in 0.38 s
+[2020-06-20 22:15:14] - Start: get_agg_features
+[2020-06-20 22:15:15] - End: get_agg_features done in 0.42 s
+[2020-06-20 22:15:15] - Start: get_agg_features
+[2020-06-20 22:15:15] - End: get_agg_features done in 0.47 s
+[2020-06-20 22:15:15] - Start: get_agg_features
+[2020-06-20 22:15:16] - End: get_agg_features done in 0.52 s
+[2020-06-20 22:15:16] - Start: get_agg_features
+[2020-06-20 22:15:16] - End: get_agg_features done in 0.56 s
+[2020-06-20 22:15:16] - Start: get_agg_features
+[2020-06-20 22:15:17] - End: get_agg_features done in 0.59 s
+[2020-06-20 22:15:17] - Start: get_agg_features
+[2020-06-20 22:15:18] - End: get_agg_features done in 0.68 s
+[2020-06-20 22:15:18] - Start: get_agg_features
+[2020-06-20 22:15:18] - End: get_agg_features done in 0.77 s
+[2020-06-20 22:15:18] - Start: get_agg_features
+[2020-06-20 22:15:19] - End: get_agg_features done in 0.82 s
+[2020-06-20 22:15:19] - Start: get_agg_features
+[2020-06-20 22:15:20] - End: get_agg_features done in 0.94 s
+[2020-06-20 22:15:20] - Start: get_agg_features
+[2020-06-20 22:15:21] - End: get_agg_features done in 1.00 s
+[2020-06-20 22:15:21] - Start: get_agg_features
+[2020-06-20 22:15:22] - End: get_agg_features done in 1.05 s
+[2020-06-20 22:15:22] - Start: get_agg_features
+[2020-06-20 22:15:23] - End: get_agg_features done in 1.14 s
+[2020-06-20 22:15:23] - Start: get_agg_features
+[2020-06-20 22:15:25] - End: get_agg_features done in 1.19 s
+[2020-06-20 22:15:25] - Start: get_agg_features
+[2020-06-20 22:15:26] - End: get_agg_features done in 1.18 s
+[2020-06-20 22:15:26] - Start: get_agg_features
+[2020-06-20 22:15:27] - End: get_agg_features done in 1.31 s
+[2020-06-20 22:15:27] - Save train test
+[2020-06-20 22:15:28] - train shape: (19720, 455), test shape, (29582, 455)
+[2020-06-20 22:15:28] - End: main done in 30.31 s
+[2020-06-21 21:48:45] - Start: main
+[2020-06-21 21:48:45] - ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+[2020-06-21 21:48:45] - Start: load_data
+[2020-06-21 21:48:46] - End: load_data done in 0.72 s
+[2020-06-21 21:48:46] - Start: get_title
+[2020-06-21 21:48:46] - End: get_title done in 0.02 s
+[2020-06-21 21:48:46] - Start: get_published
+[2020-06-21 21:48:46] - End: get_published done in 0.09 s
+[2020-06-21 21:48:46] - Start: get_channel
+[2020-06-21 21:48:46] - End: get_channel done in 0.04 s
+[2020-06-21 21:48:46] - Start: get_collection
+[2020-06-21 21:48:46] - End: get_collection done in 0.16 s
+[2020-06-21 21:48:46] - Start: get_tag
+[2020-06-21 21:48:52] - End: get_tag done in 5.42 s
+[2020-06-21 21:48:52] - Start: get_like_dislike_comment
+[2020-06-21 21:48:52] - End: get_like_dislike_comment done in 0.01 s
+[2020-06-21 21:48:52] - Start: get_description
+[2020-06-21 21:48:52] - End: get_description done in 0.19 s
+[2020-06-21 21:48:52] - Start: get_boolean
+[2020-06-21 21:48:52] - End: get_boolean done in 0.00 s
+[2020-06-21 21:48:52] - Start: get_delta
+[2020-06-21 21:48:53] - End: get_delta done in 1.12 s
+[2020-06-21 21:48:53] - Start: get_language
+[2020-06-21 21:49:01] - End: get_language done in 7.94 s
+[2020-06-21 21:49:01] - Start: get_in_word
+[2020-06-21 21:49:01] - End: get_in_word done in 0.47 s
+[2020-06-21 21:49:01] - Start: get_freq
+[2020-06-21 21:49:01] - End: get_freq done in 0.01 s
+[2020-06-21 21:49:01] - Start: get_agg_features
+[2020-06-21 21:49:02] - End: get_agg_features done in 0.34 s
+[2020-06-21 21:49:02] - Start: get_agg_features
+[2020-06-21 21:49:02] - End: get_agg_features done in 0.34 s
+[2020-06-21 21:49:02] - Start: get_agg_features
+[2020-06-21 21:49:02] - End: get_agg_features done in 0.36 s
+[2020-06-21 21:49:02] - Start: get_agg_features
+[2020-06-21 21:49:03] - End: get_agg_features done in 0.42 s
+[2020-06-21 21:49:03] - Start: get_agg_features
+[2020-06-21 21:49:03] - End: get_agg_features done in 0.48 s
+[2020-06-21 21:49:03] - Start: get_agg_features
+[2020-06-21 21:49:04] - End: get_agg_features done in 0.57 s
+[2020-06-21 21:49:04] - Start: get_agg_features
+[2020-06-21 21:49:05] - End: get_agg_features done in 0.54 s
+[2020-06-21 21:49:05] - Start: get_agg_features
+[2020-06-21 21:49:05] - End: get_agg_features done in 0.49 s
+[2020-06-21 21:49:05] - Start: get_agg_features
+[2020-06-21 21:49:06] - End: get_agg_features done in 0.53 s
+[2020-06-21 21:49:06] - Start: get_agg_features
+[2020-06-21 21:49:06] - End: get_agg_features done in 0.61 s
+[2020-06-21 21:49:06] - Start: get_agg_features
+[2020-06-21 21:49:07] - End: get_agg_features done in 0.63 s
+[2020-06-21 21:49:07] - Start: get_agg_features
+[2020-06-21 21:49:08] - End: get_agg_features done in 0.76 s
+[2020-06-21 21:49:08] - Start: get_agg_features
+[2020-06-21 21:49:09] - End: get_agg_features done in 0.96 s
+[2020-06-21 21:49:09] - Start: get_agg_features
+[2020-06-21 21:49:10] - End: get_agg_features done in 1.09 s
+[2020-06-21 21:49:10] - Start: get_agg_features
+[2020-06-21 21:49:11] - End: get_agg_features done in 1.10 s
+[2020-06-21 21:49:11] - Start: get_agg_features
+[2020-06-21 21:49:12] - End: get_agg_features done in 1.11 s
+[2020-06-21 21:49:12] - Start: get_agg_features
+[2020-06-21 21:49:13] - End: get_agg_features done in 1.23 s
+[2020-06-21 21:49:13] - Start: get_agg_features
+[2020-06-21 21:49:14] - End: get_agg_features done in 1.27 s
+[2020-06-21 21:49:14] - Start: get_title_vectorizer
+[2020-06-22 00:44:38] - End: get_title_vectorizer done in 10523.57 s
+[2020-06-22 00:44:38] - Save train test
+[2020-06-22 00:44:39] - train shape: (19720, 1223), test shape, (29582, 1223)
+[2020-06-22 00:44:39] - End: main done in 10554.08 s
+[2020-06-22 12:17:14] - Start: main
+[2020-06-22 12:17:14] - ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+[2020-06-22 12:17:14] - Start: load_data
+[2020-06-22 12:17:15] - End: load_data done in 0.74 s
+[2020-06-22 12:17:15] - Start: get_title
+[2020-06-22 12:17:15] - End: get_title done in 0.02 s
+[2020-06-22 12:17:15] - Start: get_published
+[2020-06-22 12:17:15] - End: get_published done in 0.10 s
+[2020-06-22 12:17:15] - Start: get_channel
+[2020-06-22 12:17:15] - End: get_channel done in 0.05 s
+[2020-06-22 12:17:15] - Start: get_collection
+[2020-06-22 12:17:15] - End: get_collection done in 0.16 s
+[2020-06-22 12:17:15] - Start: get_tag
+[2020-06-22 12:17:21] - End: get_tag done in 5.60 s
+[2020-06-22 12:17:21] - Start: get_like_dislike_comment
+[2020-06-22 12:17:21] - End: get_like_dislike_comment done in 0.01 s
+[2020-06-22 12:17:21] - Start: get_description
+[2020-06-22 12:17:21] - End: get_description done in 0.19 s
+[2020-06-22 12:17:21] - Start: get_boolean
+[2020-06-22 12:17:21] - End: get_boolean done in 0.00 s
+[2020-06-22 12:17:21] - Start: get_delta
+[2020-06-22 12:17:22] - End: get_delta done in 1.23 s
+[2020-06-22 12:17:22] - Start: get_language
+[2020-06-22 12:17:30] - End: get_language done in 8.05 s
+[2020-06-22 12:17:30] - Start: get_in_word
+[2020-06-22 12:17:31] - End: get_in_word done in 0.55 s
+[2020-06-22 12:17:31] - Start: get_freq
+[2020-06-22 12:17:31] - End: get_freq done in 0.02 s
+[2020-06-22 12:17:31] - Start: get_agg_features
+[2020-06-22 12:17:46] - End: get_agg_features done in 15.17 s
+[2020-06-22 12:17:46] - Start: concat_title_vectorizer
+[2020-06-22 12:17:46] - End: concat_title_vectorizer done in 0.64 s
+[2020-06-22 12:17:46] - Start: concat_title_umap_vectorizer
+[2020-06-22 12:17:47] - End: concat_title_umap_vectorizer done in 0.67 s
+[2020-06-22 12:17:47] - Save train test
+[2020-06-22 12:17:48] - train shape: (19720, 1233), test shape, (29582, 1233)
+[2020-06-22 12:17:48] - End: main done in 34.41 s
+[2020-06-22 12:18:26] - Start: main
+[2020-06-22 12:18:26] - ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+[2020-06-22 12:18:26] - Start: load_data
+[2020-06-22 12:18:27] - End: load_data done in 0.62 s
+[2020-06-22 12:18:27] - Start: get_title
+[2020-06-22 12:18:27] - End: get_title done in 0.03 s
+[2020-06-22 12:18:27] - Start: get_published
+[2020-06-22 12:18:27] - End: get_published done in 0.08 s
+[2020-06-22 12:18:27] - Start: get_channel
+[2020-06-22 12:18:27] - End: get_channel done in 0.04 s
+[2020-06-22 12:18:27] - Start: get_collection
+[2020-06-22 12:18:27] - End: get_collection done in 0.12 s
+[2020-06-22 12:18:27] - Start: get_tag
+[2020-06-22 12:18:33] - End: get_tag done in 5.36 s
+[2020-06-22 12:18:33] - Start: get_like_dislike_comment
+[2020-06-22 12:18:33] - End: get_like_dislike_comment done in 0.02 s
+[2020-06-22 12:18:33] - Start: get_description
+[2020-06-22 12:18:33] - End: get_description done in 0.18 s
+[2020-06-22 12:18:33] - Start: get_boolean
+[2020-06-22 12:18:33] - End: get_boolean done in 0.00 s
+[2020-06-22 12:18:33] - Start: get_delta
+[2020-06-22 12:18:34] - End: get_delta done in 1.09 s
+[2020-06-22 12:18:34] - Start: get_language
+[2020-06-22 12:18:42] - End: get_language done in 7.53 s
+[2020-06-22 12:18:42] - Start: get_in_word
+[2020-06-22 12:18:42] - End: get_in_word done in 0.48 s
+[2020-06-22 12:18:42] - Start: get_freq
+[2020-06-22 12:18:42] - End: get_freq done in 0.01 s
+[2020-06-22 12:18:42] - Start: get_agg_features
+[2020-06-22 12:18:57] - End: get_agg_features done in 14.66 s
+[2020-06-22 12:18:57] - Start: concat_title_vectorizer
+[2020-06-22 12:18:57] - End: concat_title_vectorizer done in 0.67 s
+[2020-06-22 12:18:57] - Start: concat_title_umap_vectorizer
+[2020-06-22 12:18:58] - End: concat_title_umap_vectorizer done in 0.69 s
+[2020-06-22 12:18:58] - Save train test
+[2020-06-22 12:18:59] - train shape: (19720, 1233), test shape, (29582, 1233)
+[2020-06-22 12:18:59] - End: main done in 32.85 s
+[2020-06-22 23:22:11] - Start: main
+[2020-06-22 23:22:11] - ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+[2020-06-22 23:22:11] - Start: load_data
+[2020-06-22 23:22:12] - End: load_data done in 0.66 s
+[2020-06-22 23:22:12] - Start: get_title
+[2020-06-22 23:22:12] - End: get_title done in 0.02 s
+[2020-06-22 23:22:12] - Start: get_published
+[2020-06-22 23:22:12] - End: get_published done in 0.09 s
+[2020-06-22 23:22:12] - Start: get_channel
+[2020-06-22 23:22:12] - End: get_channel done in 0.04 s
+[2020-06-22 23:22:12] - Start: get_collection
+[2020-06-22 23:22:12] - End: get_collection done in 0.11 s
+[2020-06-22 23:22:12] - Start: get_tag
+[2020-06-22 23:22:18] - End: get_tag done in 5.41 s
+[2020-06-22 23:22:18] - Start: get_like_dislike_comment
+[2020-06-22 23:22:18] - End: get_like_dislike_comment done in 0.01 s
+[2020-06-22 23:22:18] - Start: get_description
+[2020-06-22 23:22:18] - End: get_description done in 0.19 s
+[2020-06-22 23:22:18] - Start: get_boolean
+[2020-06-22 23:22:18] - End: get_boolean done in 0.00 s
+[2020-06-22 23:22:18] - Start: get_delta
+[2020-06-22 23:22:19] - End: get_delta done in 1.09 s
+[2020-06-22 23:22:19] - Start: get_language
+[2020-06-22 23:22:26] - End: get_language done in 7.59 s
+[2020-06-22 23:22:26] - Start: get_in_word
+[2020-06-22 23:22:27] - End: get_in_word done in 0.47 s
+[2020-06-22 23:22:27] - Start: get_freq
+[2020-06-22 23:22:27] - End: get_freq done in 0.02 s
+[2020-06-22 23:22:27] - Start: get_agg_features
+[2020-06-22 23:23:29] - End: get_agg_features done in 62.39 s
+[2020-06-22 23:23:29] - Start: concat_title_vectorizer
+[2020-06-22 23:23:30] - End: concat_title_vectorizer done in 0.83 s
+[2020-06-22 23:23:30] - Start: concat_title_umap_vectorizer
+[2020-06-22 23:23:31] - End: concat_title_umap_vectorizer done in 0.91 s
+[2020-06-22 23:23:31] - Save train test
+[2020-06-22 23:23:33] - train shape: (19720, 1593), test shape, (29582, 1593)
+[2020-06-22 23:23:33] - End: main done in 81.70 s
+[2020-06-23 00:35:50] - Start: main
+[2020-06-23 00:35:50] - ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+[2020-06-23 00:35:50] - Start: load_data
+[2020-06-23 00:35:51] - End: load_data done in 0.66 s
+[2020-06-23 00:35:51] - Start: get_title
+[2020-06-23 00:35:51] - End: get_title done in 0.02 s
+[2020-06-23 00:35:51] - Start: get_published
+[2020-06-23 00:35:51] - End: get_published done in 0.09 s
+[2020-06-23 00:35:51] - Start: get_channel
+[2020-06-23 00:35:51] - End: get_channel done in 0.04 s
+[2020-06-23 00:35:51] - Start: get_collection
+[2020-06-23 00:35:51] - End: get_collection done in 0.15 s
+[2020-06-23 00:35:51] - Start: get_tag
+[2020-06-23 00:35:57] - End: get_tag done in 5.13 s
+[2020-06-23 00:35:57] - Start: get_like_dislike_comment
+[2020-06-23 00:35:57] - End: get_like_dislike_comment done in 0.01 s
+[2020-06-23 00:35:57] - Start: get_description
+[2020-06-23 00:35:57] - End: get_description done in 0.19 s
+[2020-06-23 00:35:57] - Start: get_boolean
+[2020-06-23 00:35:57] - End: get_boolean done in 0.00 s
+[2020-06-23 00:35:57] - Start: get_delta
+[2020-06-23 00:35:58] - End: get_delta done in 1.07 s
+[2020-06-23 00:35:58] - Start: get_language
+[2020-06-23 00:36:05] - End: get_language done in 7.32 s
+[2020-06-23 00:36:05] - Start: get_in_word
+[2020-06-23 00:36:06] - End: get_in_word done in 0.47 s
+[2020-06-23 00:36:06] - Start: get_freq
+[2020-06-23 00:36:06] - End: get_freq done in 0.01 s
+[2020-06-23 00:36:06] - Start: get_binning
+[2020-06-23 00:36:06] - End: get_binning done in 0.00 s
+[2020-06-23 00:36:06] - Start: get_agg_features
+[2020-06-23 00:37:51] - End: get_agg_features done in 104.85 s
+[2020-06-23 00:37:51] - Start: concat_title_vectorizer
+[2020-06-23 00:37:51] - End: concat_title_vectorizer done in 0.79 s
+[2020-06-23 00:37:51] - Start: get_desc_vectorizer
+[2020-06-23 03:06:23] - End: get_desc_vectorizer done in 8911.84 s
+[2020-06-23 03:06:23] - Start: concat_title_umap_vectorizer
+[2020-06-23 03:06:25] - End: concat_title_umap_vectorizer done in 1.47 s
+[2020-06-23 03:06:26] - Save train test
+[2020-06-23 03:06:27] - train shape: (19720, 2543), test shape, (29582, 2543)
+[2020-06-23 03:06:27] - End: main done in 9036.91 s
+[2020-06-23 22:38:43] - Start: main
+[2020-06-23 22:38:43] - ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+[2020-06-23 22:38:43] - Start: load_data
+[2020-06-23 22:38:43] - End: load_data done in 0.75 s
+[2020-06-23 22:38:44] - Start: get_title
+[2020-06-23 22:38:44] - End: get_title done in 0.03 s
+[2020-06-23 22:38:44] - Start: get_published
+[2020-06-23 22:38:44] - End: get_published done in 0.11 s
+[2020-06-23 22:38:44] - Start: get_channel
+[2020-06-23 22:38:44] - End: get_channel done in 0.04 s
+[2020-06-23 22:38:44] - Start: get_collection
+[2020-06-23 22:38:44] - End: get_collection done in 0.16 s
+[2020-06-23 22:38:44] - Start: get_tag
+[2020-06-23 22:38:49] - End: get_tag done in 5.55 s
+[2020-06-23 22:38:49] - Start: get_like_dislike_comment
+[2020-06-23 22:38:49] - End: get_like_dislike_comment done in 0.01 s
+[2020-06-23 22:38:49] - Start: get_description
+[2020-06-23 22:38:50] - End: get_description done in 0.20 s
+[2020-06-23 22:38:50] - Start: get_boolean
+[2020-06-23 22:38:50] - End: get_boolean done in 0.00 s
+[2020-06-23 22:38:50] - Start: get_delta
+[2020-06-23 22:38:51] - End: get_delta done in 1.14 s
+[2020-06-23 22:38:51] - Start: get_language
+[2020-06-23 22:38:59] - End: get_language done in 7.76 s
+[2020-06-23 22:38:59] - Start: get_in_word
+[2020-06-23 22:38:59] - End: get_in_word done in 0.49 s
+[2020-06-23 22:38:59] - Start: get_freq
+[2020-06-23 22:38:59] - End: get_freq done in 0.01 s
+[2020-06-23 22:38:59] - Start: get_binning
+[2020-06-23 22:38:59] - End: get_binning done in 0.00 s
+[2020-06-23 22:38:59] - Start: get_agg_features
+[2020-06-23 22:43:33] - End: get_agg_features done in 273.61 s
+[2020-06-23 22:43:33] - Start: concat_title_vectorizer
+[2020-06-23 22:43:34] - End: concat_title_vectorizer done in 1.50 s
+[2020-06-23 22:43:34] - Start: concat_desc_vectorizer
+[2020-06-23 22:43:36] - End: concat_desc_vectorizer done in 1.69 s
+[2020-06-23 22:43:36] - Start: concat_title_umap_vectorizer
+[2020-06-23 22:43:38] - End: concat_title_umap_vectorizer done in 1.95 s
+[2020-06-23 22:43:38] - Start: concat_description_umap_vectorizer
+[2020-06-23 22:43:40] - End: concat_description_umap_vectorizer done in 2.16 s
+[2020-06-23 22:43:42] - Save train test
+[2020-06-23 22:43:44] - train shape: (19720, 2916), test shape, (29582, 2916)
+[2020-06-23 22:43:44] - End: main done in 301.44 s

@@ -1,0 +1,5 @@
+[2020-06-23 17:35:17] - lgb_KFold_06231735 - train_x shape: (19720, 455)
+[2020-06-23 17:35:17] - lgb_KFold_06231735 - train_y shape: (19720,)
+[2020-06-23 17:35:17] - lgb_KFold_06231735 - start training cv
+[2020-06-23 17:35:17] - lgb_KFold_06231735 - cv method: KFold
+[2020-06-23 17:35:17] - lgb_KFold_06231735 fold 0 - start training

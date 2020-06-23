@@ -1,0 +1,28 @@
+[2020-06-20 02:31:32] - lgb_KFold_06200231 - train_x shape: (19720, 122)
+[2020-06-20 02:31:32] - lgb_KFold_06200231 - train_y shape: (19720,)
+[2020-06-20 02:31:32] - lgb_KFold_06200231 - start training cv
+[2020-06-20 02:31:32] - lgb_KFold_06200231 - cv method: KFold
+[2020-06-20 02:31:32] - lgb_KFold_06200231 fold 0 - start training
+[2020-06-20 02:32:01] - lgb_KFold_06200231 fold 0 - end training - score 0.803167730354392
+[2020-06-20 02:32:02] - lgb_KFold_06200231 fold 1 - start training
+[2020-06-20 02:32:47] - lgb_KFold_06200231 fold 1 - end training - score 0.7800110896490184
+[2020-06-20 02:32:49] - lgb_KFold_06200231 fold 2 - start training
+[2020-06-20 02:33:38] - lgb_KFold_06200231 fold 2 - end training - score 0.7438185074132914
+[2020-06-20 02:33:40] - lgb_KFold_06200231 fold 3 - start training
+[2020-06-20 02:34:27] - lgb_KFold_06200231 fold 3 - end training - score 0.7740900636021216
+[2020-06-20 02:34:30] - lgb_KFold_06200231 fold 4 - start training
+[2020-06-20 02:35:21] - lgb_KFold_06200231 fold 4 - end training - score 0.7304387724063722
+[2020-06-20 02:35:24] - lgb_KFold_06200231 - start prediction cv
+[2020-06-20 02:35:24] - lgb_KFold_06200231 - start prediction fold:0
+[2020-06-20 02:35:26] - lgb_KFold_06200231 - end prediction fold:0
+[2020-06-20 02:35:26] - lgb_KFold_06200231 - start prediction fold:1
+[2020-06-20 02:35:29] - lgb_KFold_06200231 - end prediction fold:1
+[2020-06-20 02:35:29] - lgb_KFold_06200231 - start prediction fold:2
+[2020-06-20 02:35:32] - lgb_KFold_06200231 - end prediction fold:2
+[2020-06-20 02:35:32] - lgb_KFold_06200231 - start prediction fold:3
+[2020-06-20 02:35:35] - lgb_KFold_06200231 - end prediction fold:3
+[2020-06-20 02:35:35] - lgb_KFold_06200231 - start prediction fold:4
+[2020-06-20 02:35:38] - lgb_KFold_06200231 - end prediction fold:4
+[2020-06-20 02:35:38] - lgb_KFold_06200231 - end prediction cv
+[2020-06-20 02:35:38] - lgb_KFold_06200231 - start create submission
+[2020-06-20 02:35:38] - lgb_KFold_06200231 - end create submission
