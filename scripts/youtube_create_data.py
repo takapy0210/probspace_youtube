@@ -331,6 +331,9 @@ def get_agg_features(df):
     df = get_agg(df, ['categoryId'], 'likes_comments')
     df = get_agg(df, ['categoryId'], 'dislikes_comments')
     df = get_agg(df, ['categoryId'], 'comments_likes')
+    df = get_agg(df, ['categoryId'], 'like_per_day')
+    df = get_agg(df, ['categoryId'], 'dislike_per_day')
+    df = get_agg(df, ['categoryId'], 'comment_count_per_day')
 
     # channelIdごとの集計特徴量
     df = get_agg(df, ['channelId'], 'likes')
@@ -342,7 +345,11 @@ def get_agg_features(df):
     df = get_agg(df, ['channelId'], 'likes_comments')
     df = get_agg(df, ['channelId'], 'dislikes_comments')
     df = get_agg(df, ['channelId'], 'comments_likes')
+    df = get_agg(df, ['channelId'], 'like_per_day')
+    df = get_agg(df, ['channelId'], 'dislike_per_day')
+    df = get_agg(df, ['channelId'], 'comment_count_per_day')
 
+    """
     # categoryId / channelIdごとの集計特徴量
     df = get_agg(df, ['categoryId', 'channelId'], 'likes')
     df = get_agg(df, ['categoryId', 'channelId'], 'dislikes')
@@ -375,6 +382,7 @@ def get_agg_features(df):
     df = get_agg(df, ['dislikes_log_bin'], 'likes_comments')
     df = get_agg(df, ['dislikes_log_bin'], 'dislikes_comments')
     df = get_agg(df, ['dislikes_log_bin'], 'comments_likes')
+    """
 
     # 年/月ごと
     df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'likes')

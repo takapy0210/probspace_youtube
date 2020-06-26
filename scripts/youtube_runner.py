@@ -55,7 +55,7 @@ class youtube_Runner(Runner):
             # =================================
             """
             # pseudo labelingデータを追加する
-            pseudo_df = pd.read_pickle(self.feature_dir_name + 'test_pseudo_06231123.pkl')
+            pseudo_df = pd.read_pickle(self.feature_dir_name + 'test_pseudo_06232319.pkl')
             pseudo_df_x = pseudo_df.drop('y', axis=1)[self.features]
             pseudo_df_y = np.log1p(pseudo_df[self.target])
             # 結合
@@ -134,9 +134,6 @@ class youtube_Runner(Runner):
             model, va_idx, va_pred, score = self.train_fold(i_fold)
             self.logger.info(f'{self.run_name} fold {i_fold} - end training - score {score}')
 
-            # mlflowでトラッキング
-            # mlflow.log_metric(f'fold {i_fold}', score)
-
             # モデルを保存する
             model.save_model(self.out_dir_name)
 
@@ -156,10 +153,6 @@ class youtube_Runner(Runner):
             score_all_data = np.sqrt(self.metrics(np.expm1(self.train_y), preds))
         else:
             score_all_data = None
-
-        # mlflowでトラッキング
-        # mlflow.log_metric('score_all_data', score_all_data)
-        # mlflow.log_metric('score_fold_mean', np.mean(scores))
 
         # oofデータに対するfoldごとのscoreをcsvに書き込む（foldごとに分析する用）
         self.score_list.append(['score_all_data', score_all_data])
