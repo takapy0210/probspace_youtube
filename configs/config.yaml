@@ -4,6 +4,7 @@ SETTING:
   RAW_DATA_DIR_NAME: '../data/raw/' # オリジナルデータの格納先ディレクトリ
   FEATURE_DIR_NAME: '../data/features/' # 生成した特徴量格納ディレクトリ
   TRAIN_FILE_NAME: 'train.pkl' # 学習に使用するtrainファイル名
+  # TRAIN_FILE_NAME: 'train_pseudo_lgb_KFold_06270215.pkl' # 学習に使用するtrainファイル名
   TEST_FILE_NAME: 'test.pkl' # 予測対象のtestファイル名
   SLACK_NOTIFY: False
   EXPERIMENT_NAME: 'probspace_youtube'
@@ -44,15 +45,15 @@ MODEL_LGB:
 
 MODEL_CB:
   PARAM:
-    loss_function: 'Logloss'
-    eval_metric: 'AUC'
+    loss_function: 'RMSE'
+    eval_metric: 'RMSE'
     learning_rate: 0.05
-    iterations: 100 # 4000
-    early_stopping_rounds: 100 # 400
+    iterations: 5000
+    early_stopping_rounds: 200
     random_seed: 42
-    verbose_eval: 100
-    depth: 2 # 5
-    pred_type: 'Classifier' # [Regressor / Classifier]
+    verbose_eval: 200
+    depth: 6
+    pred_type: 'Regressor' # [Regressor / Classifier]
 
 MODEL_XGB:
   PARAM:
