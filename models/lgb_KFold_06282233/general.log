@@ -1,0 +1,28 @@
+[2020-06-28 22:33:56] - lgb_KFold_06282233 - train_x shape: (49287, 520)
+[2020-06-28 22:33:56] - lgb_KFold_06282233 - train_y shape: (49287,)
+[2020-06-28 22:33:56] - lgb_KFold_06282233 - start training cv
+[2020-06-28 22:33:56] - lgb_KFold_06282233 - cv method: KFold
+[2020-06-28 22:33:56] - lgb_KFold_06282233 fold 0 - start training
+[2020-06-28 22:45:37] - lgb_KFold_06282233 fold 0 - end training - score 0.4278654578071522
+[2020-06-28 22:45:44] - lgb_KFold_06282233 fold 1 - start training
+[2020-06-28 22:57:11] - lgb_KFold_06282233 fold 1 - end training - score 0.4243785159329977
+[2020-06-28 22:57:18] - lgb_KFold_06282233 fold 2 - start training
+[2020-06-28 23:08:39] - lgb_KFold_06282233 fold 2 - end training - score 0.42771907880010096
+[2020-06-28 23:08:46] - lgb_KFold_06282233 fold 3 - start training
+[2020-06-28 23:20:27] - lgb_KFold_06282233 fold 3 - end training - score 0.4211895854561234
+[2020-06-28 23:20:34] - lgb_KFold_06282233 fold 4 - start training
+[2020-06-28 23:33:12] - lgb_KFold_06282233 fold 4 - end training - score 0.42939756412544533
+[2020-06-28 23:33:20] - lgb_KFold_06282233 - start prediction cv
+[2020-06-28 23:33:21] - lgb_KFold_06282233 - start prediction fold:0
+[2020-06-28 23:33:35] - lgb_KFold_06282233 - end prediction fold:0
+[2020-06-28 23:33:35] - lgb_KFold_06282233 - start prediction fold:1
+[2020-06-28 23:33:50] - lgb_KFold_06282233 - end prediction fold:1
+[2020-06-28 23:33:50] - lgb_KFold_06282233 - start prediction fold:2
+[2020-06-28 23:34:05] - lgb_KFold_06282233 - end prediction fold:2
+[2020-06-28 23:34:05] - lgb_KFold_06282233 - start prediction fold:3
+[2020-06-28 23:34:20] - lgb_KFold_06282233 - end prediction fold:3
+[2020-06-28 23:34:20] - lgb_KFold_06282233 - start prediction fold:4
+[2020-06-28 23:34:34] - lgb_KFold_06282233 - end prediction fold:4
+[2020-06-28 23:34:34] - lgb_KFold_06282233 - end prediction cv
+[2020-06-28 23:34:34] - lgb_KFold_06282233 - start create submission
+[2020-06-28 23:34:34] - lgb_KFold_06282233 - end create submission

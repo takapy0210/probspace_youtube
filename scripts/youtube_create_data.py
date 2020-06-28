@@ -173,6 +173,20 @@ def get_published(df):
     return df
 
 
+def get_leave_one_out_encoder(df, cols, target):
+    """looエンコード"""
+    ce_loo = ce.LeaveOneOutEncoder(cols=cols).fit_transform(X=df[cols], y=df[target])
+    df[f'loo_encode_{cols}_{target}'] = ce_loo
+    return df
+
+
+def get_catboost_encoder(df, cols, target):
+    """catboostエンコード"""
+    ce_cbe = ce.CatBoostEncoder(cols=cols, random_state=42).fit_transform(X=df[cols], y=df[target])
+    df[f'catboost_encode_{cols}_{target}'] = ce_cbe
+    return df
+
+
 @elapsed_time
 def get_channel(df):
     """channelIdの特徴量を生成"""
@@ -180,6 +194,26 @@ def get_channel(df):
     cols = ['channelId']
     ce_oe = ce.OrdinalEncoder(cols=cols, handle_unknown='impute')
     df[cols] = ce_oe.fit_transform(df[cols])
+
+    # ターゲットエンコーディング
+    df = get_leave_one_out_encoder(df, 'channelId', 'likes')
+    df = get_leave_one_out_encoder(df, 'channelId', 'dislikes')
+    df = get_leave_one_out_encoder(df, 'channelId', 'comment_count')
+    df = get_catboost_encoder(df, 'channelId', 'likes')
+    df = get_catboost_encoder(df, 'channelId', 'dislikes')
+    df = get_catboost_encoder(df, 'channelId', 'comment_count')
+    return df
+
+
+@elapsed_time
+def get_category(df):
+    # ターゲットエンコーディング
+    df = get_leave_one_out_encoder(df, 'categoryId', 'likes')
+    df = get_leave_one_out_encoder(df, 'categoryId', 'dislikes')
+    df = get_leave_one_out_encoder(df, 'categoryId', 'comment_count')
+    df = get_catboost_encoder(df, 'categoryId', 'likes')
+    df = get_catboost_encoder(df, 'categoryId', 'dislikes')
+    df = get_catboost_encoder(df, 'categoryId', 'comment_count')
     return df
 
 
@@ -251,19 +285,53 @@ def get_boolean(df):
 @elapsed_time
 def get_delta(df):
     """日付の差分特徴量を生成"""
-    df['delta'] = (df['collection_date_after'] - df['publishedAt']).apply(lambda x: x.days)
+    df['delta'] = (df['collection_date_after'] - df['publishedAt']).apply(lambda x: x.days)  # 公開されてから収集するまでの日付
     df['delta_log'] = np.log(df['delta'])
     df['delta_sqrt'] = np.sqrt(df['delta'])
-    df['delta_published'] = (df['publishedAt'] - df['publishedAt'].min()).apply(lambda x: x.days)
+    df['delta_published'] = (df['publishedAt'] - df['publishedAt'].min()).apply(lambda x: x.days)  # youtubeができてから公開されるまでの日付
     df['delta_collection'] = (df['collection_date_after'] - df['collection_date_after'].min()).apply(lambda x: x.days)
+
+    # チャンネルごとの継続期間
+    gr_min = df.groupby('channelId')['publishedAt'].min().reset_index().rename(columns={'publishedAt': 'publishedAt_min'})
+    gr_max = df.groupby('channelId')['publishedAt'].max().reset_index().rename(columns={'publishedAt': 'publishedAt_max'})
+    _df = pd.merge(gr_min, gr_max, how='left', on='channelId')
+    df['channel_continue_day'] = (_df['publishedAt_max'] - _df['publishedAt_min']).apply(lambda x: x.days)
+
+    # 月数に換算
+    df['delta_month'] = df['delta'] / 30
+    df['delta_published_month'] = df['delta_published'] / 30
+    df['channel_continue_month'] = df['channel_continue_day'] / 30
 
     # 1日あたりのlike数、dislike数、コメント数
     df['like_per_day'] = df['likes'] / df['delta']
     df['dislike_per_day'] = df['dislikes'] / df['delta']
     df['comment_count_per_day'] = df['comment_count'] / df['delta']
-    df['like_per_day'] = df['likes'] / df['delta_published']
-    df['dislike_per_day'] = df['dislikes'] / df['delta_published']
-    df['comment_count_per_day'] = df['comment_count'] / df['delta_published']
+
+    # 1ヶ月あたりのlike数、dislike数、コメント数
+    df['like_per_month'] = df['likes'] / df['delta_month']
+    df['dislike_per_month'] = df['dislikes'] / df['delta_month']
+    df['comment_count_per_month'] = df['comment_count'] / df['delta_month']
+
+    # youtubeができてからの1日あたりのlike数、dislike数、コメント数
+    df['like_per_published_day'] = df['likes'] / df['delta_published']
+    df['dislike_per_published_day'] = df['dislikes'] / df['delta_published']
+    df['comment_count_per_published_day'] = df['comment_count'] / df['delta_published']
+
+    # youtubeができてからの1ヶ月あたりのlike数、dislike数、コメント数
+    df['like_per_published_month'] = df['likes'] / df['delta_published_month']
+    df['dislike_per_published_month'] = df['dislikes'] / df['delta_published_month']
+    df['comment_count_per_published_month'] = df['comment_count'] / df['delta_published_month']
+
+    # チャンネル開設期間の1日あたりのlike数、dislike数、コメント数
+    df['like_per_channel_continue_day'] = df['likes'] / df['channel_continue_day']
+    df['dislike_per_channel_continue_day'] = df['dislikes'] / df['channel_continue_day']
+    df['comment_count_channel_continue_day'] = df['comment_count'] / df['channel_continue_day']
+
+    # チャンネル開設期間の1ヶ月あたりのlike数、dislike数、コメント数
+    df['like_per_channel_continue_month'] = df['likes'] / df['channel_continue_month']
+    df['dislike_per_channel_continue_month'] = df['dislikes'] / df['channel_continue_month']
+    df['comment_count_channel_continue_month'] = df['comment_count'] / df['channel_continue_month']
+
     return df
 
 
@@ -344,6 +412,39 @@ def get_in_word(df):
     df['in_hikakin_title'] = df['title'].apply(lambda x: 'ヒカキン' in x.lower())
     df['in_hikakin_tags'] = df['tags'].apply(lambda x: 'ヒカキン' in x.lower())
     df['in_hikakin_description'] = df['description'].apply(lambda x: 'ヒカキン' in x.lower())
+
+    # それぞれの単語が含まれるか否かでカテゴリ化する
+    df.loc[:, 'in_word_music'] = 0
+    df.loc[(df['in_music_title'] == True) | (df['in_music_tags'] == True) |
+           (df['in_music_description'] == True), 'in_word_music'] = 1
+
+    df.loc[:, 'in_word_official'] = 0
+    df.loc[(df['in_ff'] == True) | (df['in_OffChannell'] == True) |
+           (df['in_OffJa'] == True) | (df['in_OffChannellJa'] == True), 'in_word_official'] = 1
+
+    df.loc[:, 'in_word_cm'] = 0
+    df.loc[(df['in_cm_title'] == True) | (df['in_cm_tags'] == True) |
+           (df['in_cm_description'] == True), 'in_word_cm'] = 1
+
+    df.loc[:, 'in_word_video'] = 0
+    df.loc[(df['in_video_title'] == True) | (df['in_video_tags'] == True) |
+           (df['in_video_description'] == True), 'in_word_video'] = 1
+
+    df.loc[:, 'in_word_song'] = 0
+    df.loc[(df['in_song_title'] == True) | (df['in_song_tags'] == True) |
+           (df['in_song_description'] == True), 'in_word_song'] = 1
+
+    df.loc[:, 'in_word_kids'] = 0
+    df.loc[(df['in_kids_title'] == True) | (df['in_kids_tags'] == True) |
+           (df['in_kids_description'] == True), 'in_word_kids'] = 1
+
+    df.loc[:, 'in_word_anime'] = 0
+    df.loc[(df['in_animeJa_title'] == True) | (df['in_animeJa_tags'] == True) |
+           (df['in_animeJa_description'] == True), 'in_word_anime'] = 1
+
+    df.loc[:, 'in_word_nursery'] = 0
+    df.loc[(df['in_animeJa_title'] == True) | (df['in_animeJa_tags'] == True) |
+           (df['in_animeJa_description'] == True), 'in_word_anime'] = 1
 
     return df
 
@@ -430,9 +531,14 @@ def get_binning(df):
     )
     df['dislikes_log_bin'] = _bin.values
 
-    # comment_count
-    # _bin = pd.qcut(df['comment_count'], 10, labels=False)
-    # df['comment_count_bin'] = _bin.values
+    # 収集までのヶ月ごとにbin分割する
+    bin_edges = [-float('inf'), 6, 12, 18, 24, 36, 48, 60, 72, 84, 96, 108, 120, 132, 144, 156, 168, float('inf')]
+    _bin = pd.cut(
+                    df['delta_month'],
+                    bin_edges,
+                    labels=False
+    )
+    df['delta_month_bin'] = _bin.values
 
     return df
 
@@ -468,75 +574,113 @@ def get_agg_features(df):
     df = get_agg(df, ['channelId'], 'dislike_per_day')
     df = get_agg(df, ['channelId'], 'comment_count_per_day')
 
+    # delta_month_binごとの集計特徴量
+    df = get_agg(df, ['delta_month_bin'], 'likes')
+    df = get_agg(df, ['delta_month_bin'], 'dislikes')
+    df = get_agg(df, ['delta_month_bin'], 'comment_count')
+
+    # in_word_musicごとの集計特徴量
+    df = get_agg(df, ['in_word_music'], 'likes')
+    df = get_agg(df, ['in_word_music'], 'dislikes')
+    df = get_agg(df, ['in_word_music'], 'comment_count')
+
+    df = get_agg(df, ['in_word_official'], 'likes')
+    df = get_agg(df, ['in_word_official'], 'dislikes')
+    df = get_agg(df, ['in_word_official'], 'comment_count')
+
+    df = get_agg(df, ['in_word_cm'], 'likes')
+    df = get_agg(df, ['in_word_cm'], 'dislikes')
+    df = get_agg(df, ['in_word_cm'], 'comment_count')
+
+    df = get_agg(df, ['in_word_video'], 'likes')
+    df = get_agg(df, ['in_word_video'], 'dislikes')
+    df = get_agg(df, ['in_word_video'], 'comment_count')
+
+    df = get_agg(df, ['in_word_song'], 'likes')
+    df = get_agg(df, ['in_word_song'], 'dislikes')
+    df = get_agg(df, ['in_word_song'], 'comment_count')
+
+    df = get_agg(df, ['in_word_kids'], 'likes')
+    df = get_agg(df, ['in_word_kids'], 'dislikes')
+    df = get_agg(df, ['in_word_kids'], 'comment_count')
+
+    df = get_agg(df, ['in_word_anime'], 'likes')
+    df = get_agg(df, ['in_word_anime'], 'dislikes')
+    df = get_agg(df, ['in_word_anime'], 'comment_count')
+
+    df = get_agg(df, ['in_word_nursery'], 'likes')
+    df = get_agg(df, ['in_word_nursery'], 'dislikes')
+    df = get_agg(df, ['in_word_nursery'], 'comment_count')
+
     # likes_binごとの集計特徴量
-    df = get_agg(df, ['likes_log_bin'], 'likes')
-    df = get_agg(df, ['likes_log_bin'], 'dislikes')
-    df = get_agg(df, ['likes_log_bin'], 'comment_count')
-    df = get_agg(df, ['likes_log_bin'], 'delta')
-    df = get_agg(df, ['likes_log_bin'], 'tags_point')
-    df = get_agg(df, ['likes_log_bin'], 'like_dislike_ratio')
-    df = get_agg(df, ['likes_log_bin'], 'likes_comments')
-    df = get_agg(df, ['likes_log_bin'], 'dislikes_comments')
-    df = get_agg(df, ['likes_log_bin'], 'comments_likes')
-    df = get_agg(df, ['likes_log_bin'], 'like_per_day')
-    df = get_agg(df, ['likes_log_bin'], 'dislike_per_day')
-    df = get_agg(df, ['likes_log_bin'], 'comment_count_per_day')
+    # df = get_agg(df, ['likes_log_bin'], 'likes')
+    # df = get_agg(df, ['likes_log_bin'], 'dislikes')
+    # df = get_agg(df, ['likes_log_bin'], 'comment_count')
+    # df = get_agg(df, ['likes_log_bin'], 'delta')
+    # df = get_agg(df, ['likes_log_bin'], 'tags_point')
+    # df = get_agg(df, ['likes_log_bin'], 'like_dislike_ratio')
+    # df = get_agg(df, ['likes_log_bin'], 'likes_comments')
+    # df = get_agg(df, ['likes_log_bin'], 'dislikes_comments')
+    # df = get_agg(df, ['likes_log_bin'], 'comments_likes')
+    # df = get_agg(df, ['likes_log_bin'], 'like_per_day')
+    # df = get_agg(df, ['likes_log_bin'], 'dislike_per_day')
+    # df = get_agg(df, ['likes_log_bin'], 'comment_count_per_day')
 
     # dislikes_binごとの集計特徴量
-    df = get_agg(df, ['dislikes_log_bin'], 'likes')
-    df = get_agg(df, ['dislikes_log_bin'], 'dislikes')
-    df = get_agg(df, ['dislikes_log_bin'], 'comment_count')
-    df = get_agg(df, ['dislikes_log_bin'], 'delta')
-    df = get_agg(df, ['dislikes_log_bin'], 'tags_point')
-    df = get_agg(df, ['dislikes_log_bin'], 'like_dislike_ratio')
-    df = get_agg(df, ['dislikes_log_bin'], 'likes_comments')
-    df = get_agg(df, ['dislikes_log_bin'], 'dislikes_comments')
-    df = get_agg(df, ['dislikes_log_bin'], 'comments_likes')
-    df = get_agg(df, ['dislikes_log_bin'], 'like_per_day')
-    df = get_agg(df, ['dislikes_log_bin'], 'dislike_per_day')
-    df = get_agg(df, ['dislikes_log_bin'], 'comment_count_per_day')
+    # df = get_agg(df, ['dislikes_log_bin'], 'likes')
+    # df = get_agg(df, ['dislikes_log_bin'], 'dislikes')
+    # df = get_agg(df, ['dislikes_log_bin'], 'comment_count')
+    # df = get_agg(df, ['dislikes_log_bin'], 'delta')
+    # df = get_agg(df, ['dislikes_log_bin'], 'tags_point')
+    # df = get_agg(df, ['dislikes_log_bin'], 'like_dislike_ratio')
+    # df = get_agg(df, ['dislikes_log_bin'], 'likes_comments')
+    # df = get_agg(df, ['dislikes_log_bin'], 'dislikes_comments')
+    # df = get_agg(df, ['dislikes_log_bin'], 'comments_likes')
+    # df = get_agg(df, ['dislikes_log_bin'], 'like_per_day')
+    # df = get_agg(df, ['dislikes_log_bin'], 'dislike_per_day')
+    # df = get_agg(df, ['dislikes_log_bin'], 'comment_count_per_day')
 
     # 曜日ごと
-    df = get_agg(df, ['publishedAt_dayofweek'], 'likes')
-    df = get_agg(df, ['publishedAt_dayofweek'], 'dislikes')
-    df = get_agg(df, ['publishedAt_dayofweek'], 'comment_count')
-    df = get_agg(df, ['publishedAt_dayofweek'], 'delta')
-    df = get_agg(df, ['publishedAt_dayofweek'], 'tags_point')
-    df = get_agg(df, ['publishedAt_dayofweek'], 'like_dislike_ratio')
-    df = get_agg(df, ['publishedAt_dayofweek'], 'likes_comments')
-    df = get_agg(df, ['publishedAt_dayofweek'], 'dislikes_comments')
-    df = get_agg(df, ['publishedAt_dayofweek'], 'comments_likes')
-    df = get_agg(df, ['publishedAt_dayofweek'], 'like_per_day')
-    df = get_agg(df, ['publishedAt_dayofweek'], 'dislike_per_day')
-    df = get_agg(df, ['publishedAt_dayofweek'], 'comment_count_per_day')
+    # df = get_agg(df, ['publishedAt_dayofweek'], 'likes')
+    # df = get_agg(df, ['publishedAt_dayofweek'], 'dislikes')
+    # df = get_agg(df, ['publishedAt_dayofweek'], 'comment_count')
+    # df = get_agg(df, ['publishedAt_dayofweek'], 'delta')
+    # df = get_agg(df, ['publishedAt_dayofweek'], 'tags_point')
+    # df = get_agg(df, ['publishedAt_dayofweek'], 'like_dislike_ratio')
+    # df = get_agg(df, ['publishedAt_dayofweek'], 'likes_comments')
+    # df = get_agg(df, ['publishedAt_dayofweek'], 'dislikes_comments')
+    # df = get_agg(df, ['publishedAt_dayofweek'], 'comments_likes')
+    # df = get_agg(df, ['publishedAt_dayofweek'], 'like_per_day')
+    # df = get_agg(df, ['publishedAt_dayofweek'], 'dislike_per_day')
+    # df = get_agg(df, ['publishedAt_dayofweek'], 'comment_count_per_day')
 
     # 月ごと
-    df = get_agg(df, ['publishedAt_month'], 'likes')
-    df = get_agg(df, ['publishedAt_month'], 'dislikes')
-    df = get_agg(df, ['publishedAt_month'], 'comment_count')
-    df = get_agg(df, ['publishedAt_month'], 'delta')
-    df = get_agg(df, ['publishedAt_month'], 'tags_point')
-    df = get_agg(df, ['publishedAt_month'], 'like_dislike_ratio')
-    df = get_agg(df, ['publishedAt_month'], 'likes_comments')
-    df = get_agg(df, ['publishedAt_month'], 'dislikes_comments')
-    df = get_agg(df, ['publishedAt_month'], 'comments_likes')
-    df = get_agg(df, ['publishedAt_month'], 'like_per_day')
-    df = get_agg(df, ['publishedAt_month'], 'dislike_per_day')
-    df = get_agg(df, ['publishedAt_month'], 'comment_count_per_day')
+    # df = get_agg(df, ['publishedAt_month'], 'likes')
+    # df = get_agg(df, ['publishedAt_month'], 'dislikes')
+    # df = get_agg(df, ['publishedAt_month'], 'comment_count')
+    # df = get_agg(df, ['publishedAt_month'], 'delta')
+    # df = get_agg(df, ['publishedAt_month'], 'tags_point')
+    # df = get_agg(df, ['publishedAt_month'], 'like_dislike_ratio')
+    # df = get_agg(df, ['publishedAt_month'], 'likes_comments')
+    # df = get_agg(df, ['publishedAt_month'], 'dislikes_comments')
+    # df = get_agg(df, ['publishedAt_month'], 'comments_likes')
+    # df = get_agg(df, ['publishedAt_month'], 'like_per_day')
+    # df = get_agg(df, ['publishedAt_month'], 'dislike_per_day')
+    # df = get_agg(df, ['publishedAt_month'], 'comment_count_per_day')
 
     # 年/月ごと
     df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'likes')
     df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'dislikes')
     df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'comment_count')
-    df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'delta')
-    df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'tags_point')
-    df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'like_dislike_ratio')
-    df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'likes_comments')
-    df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'dislikes_comments')
-    df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'comments_likes')
-    df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'like_per_day')
-    df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'dislike_per_day')
-    df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'comment_count_per_day')
+    # df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'delta')
+    # df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'tags_point')
+    # df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'like_dislike_ratio')
+    # df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'likes_comments')
+    # df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'dislikes_comments')
+    # df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'comments_likes')
+    # df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'like_per_day')
+    # df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'dislike_per_day')
+    # df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'comment_count_per_day')
 
     return df
 
@@ -702,6 +846,8 @@ def main(create_title_bert_vec, create_desc_bert_vec,
     df = get_published(df)
     # channel
     df = get_channel(df)
+    # category
+    df = get_category(df)
     # collection_date
     df = get_collection(df)
     # tag

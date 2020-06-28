@@ -213,6 +213,21 @@ class youtube_Runner(Runner):
 
         self.logger.info(f'{self.run_name} - end prediction cv')
 
+    def load_x_train(self) -> pd.DataFrame:
+        """学習データの特徴量を読み込む
+        列名で抽出する以上のことを行う場合、このメソッドの修正が必要
+        :return: 学習データの特徴量
+        """
+        df = pd.read_pickle(self.feature_dir_name + f'{self.train_file_name}')
+
+        # 特定のサンプルを除外して学習させる場合 -----------
+        self.remove_train_index = df[(df[self.target] >= 599999999)].index
+        df = df.drop(index=self.remove_train_index)
+
+        df = df[self.features]
+
+        return df
+
     def load_y_train(self) -> pd.Series:
         """学習データの目的変数を読み込む
         対数変換や使用するデータを削除する場合には、このメソッドの修正が必要
@@ -221,7 +236,6 @@ class youtube_Runner(Runner):
         df = pd.read_pickle(self.feature_dir_name + f'{self.train_file_name}')
 
         # 特定のサンプルを除外して学習させる場合 -------------
-        # df = df.drop(index=self.remove_train_index)
-        # -----------------------------------------
+        df = df.drop(index=self.remove_train_index)
 
         return pd.Series(np.log1p(df[self.target]))
