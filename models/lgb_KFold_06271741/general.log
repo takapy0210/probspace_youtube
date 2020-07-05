@@ -1,0 +1,28 @@
+[2020-06-27 17:41:06] - lgb_KFold_06271741 - train_x shape: (19720, 506)
+[2020-06-27 17:41:06] - lgb_KFold_06271741 - train_y shape: (19720,)
+[2020-06-27 17:41:06] - lgb_KFold_06271741 - start training cv
+[2020-06-27 17:41:06] - lgb_KFold_06271741 - cv method: KFold
+[2020-06-27 17:41:06] - lgb_KFold_06271741 fold 0 - start training
+[2020-06-27 17:45:53] - lgb_KFold_06271741 fold 0 - end training - score 0.7653006825578152
+[2020-06-27 17:45:56] - lgb_KFold_06271741 fold 1 - start training
+[2020-06-27 17:48:29] - lgb_KFold_06271741 fold 1 - end training - score 0.7403503387433034
+[2020-06-27 17:48:31] - lgb_KFold_06271741 fold 2 - start training
+[2020-06-27 17:52:22] - lgb_KFold_06271741 fold 2 - end training - score 0.6967729854428829
+[2020-06-27 17:52:25] - lgb_KFold_06271741 fold 3 - start training
+[2020-06-27 17:59:10] - lgb_KFold_06271741 fold 3 - end training - score 0.7291696613273592
+[2020-06-27 17:59:15] - lgb_KFold_06271741 fold 4 - start training
+[2020-06-27 18:03:18] - lgb_KFold_06271741 fold 4 - end training - score 0.7079162377853218
+[2020-06-27 18:03:21] - lgb_KFold_06271741 - start prediction cv
+[2020-06-27 18:03:22] - lgb_KFold_06271741 - start prediction fold:0
+[2020-06-27 18:03:29] - lgb_KFold_06271741 - end prediction fold:0
+[2020-06-27 18:03:29] - lgb_KFold_06271741 - start prediction fold:1
+[2020-06-27 18:03:32] - lgb_KFold_06271741 - end prediction fold:1
+[2020-06-27 18:03:32] - lgb_KFold_06271741 - start prediction fold:2
+[2020-06-27 18:03:36] - lgb_KFold_06271741 - end prediction fold:2
+[2020-06-27 18:03:36] - lgb_KFold_06271741 - start prediction fold:3
+[2020-06-27 18:03:44] - lgb_KFold_06271741 - end prediction fold:3
+[2020-06-27 18:03:44] - lgb_KFold_06271741 - start prediction fold:4
+[2020-06-27 18:03:49] - lgb_KFold_06271741 - end prediction fold:4
+[2020-06-27 18:03:49] - lgb_KFold_06271741 - end prediction cv
+[2020-06-27 18:03:49] - lgb_KFold_06271741 - start create submission
+[2020-06-27 18:03:49] - lgb_KFold_06271741 - end create submission

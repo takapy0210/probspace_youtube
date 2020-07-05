@@ -1,0 +1,28 @@
+[2020-06-25 23:23:46] - cb_KFold_06252323 - train_x shape: (19720, 468)
+[2020-06-25 23:23:46] - cb_KFold_06252323 - train_y shape: (19720,)
+[2020-06-25 23:23:46] - cb_KFold_06252323 - start training cv
+[2020-06-25 23:23:46] - cb_KFold_06252323 - cv method: KFold
+[2020-06-25 23:23:46] - cb_KFold_06252323 fold 0 - start training
+[2020-06-25 23:32:25] - cb_KFold_06252323 fold 0 - end training - score 0.8176572284574705
+[2020-06-25 23:32:26] - cb_KFold_06252323 fold 1 - start training
+[2020-06-25 23:41:47] - cb_KFold_06252323 fold 1 - end training - score 0.7700758762087614
+[2020-06-25 23:41:47] - cb_KFold_06252323 fold 2 - start training
+[2020-06-25 23:51:18] - cb_KFold_06252323 fold 2 - end training - score 0.7390056119740097
+[2020-06-25 23:51:18] - cb_KFold_06252323 fold 3 - start training
+[2020-06-26 00:00:49] - cb_KFold_06252323 fold 3 - end training - score 0.7715047665073274
+[2020-06-26 00:00:50] - cb_KFold_06252323 fold 4 - start training
+[2020-06-26 00:10:08] - cb_KFold_06252323 fold 4 - end training - score 0.7458492981667532
+[2020-06-26 00:10:09] - cb_KFold_06252323 - start prediction cv
+[2020-06-26 00:10:10] - cb_KFold_06252323 - start prediction fold:0
+[2020-06-26 00:10:12] - cb_KFold_06252323 - end prediction fold:0
+[2020-06-26 00:10:12] - cb_KFold_06252323 - start prediction fold:1
+[2020-06-26 00:10:14] - cb_KFold_06252323 - end prediction fold:1
+[2020-06-26 00:10:14] - cb_KFold_06252323 - start prediction fold:2
+[2020-06-26 00:10:16] - cb_KFold_06252323 - end prediction fold:2
+[2020-06-26 00:10:16] - cb_KFold_06252323 - start prediction fold:3
+[2020-06-26 00:10:19] - cb_KFold_06252323 - end prediction fold:3
+[2020-06-26 00:10:19] - cb_KFold_06252323 - start prediction fold:4
+[2020-06-26 00:10:21] - cb_KFold_06252323 - end prediction fold:4
+[2020-06-26 00:10:21] - cb_KFold_06252323 - end prediction cv
+[2020-06-26 00:10:21] - cb_KFold_06252323 - start create submission
+[2020-06-26 00:10:21] - cb_KFold_06252323 - end create submission

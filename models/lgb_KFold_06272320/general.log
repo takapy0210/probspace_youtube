@@ -1,0 +1,28 @@
+[2020-06-27 23:20:41] - lgb_KFold_06272320 - train_x shape: (19720, 1832)
+[2020-06-27 23:20:41] - lgb_KFold_06272320 - train_y shape: (19720,)
+[2020-06-27 23:20:41] - lgb_KFold_06272320 - start training cv
+[2020-06-27 23:20:41] - lgb_KFold_06272320 - cv method: KFold
+[2020-06-27 23:20:41] - lgb_KFold_06272320 fold 0 - start training
+[2020-06-27 23:35:23] - lgb_KFold_06272320 fold 0 - end training - score 0.7860203950927922
+[2020-06-27 23:35:27] - lgb_KFold_06272320 fold 1 - start training
+[2020-06-27 23:43:48] - lgb_KFold_06272320 fold 1 - end training - score 0.7621722595337038
+[2020-06-27 23:43:50] - lgb_KFold_06272320 fold 2 - start training
+[2020-06-27 23:50:44] - lgb_KFold_06272320 fold 2 - end training - score 0.7325921154110809
+[2020-06-27 23:50:46] - lgb_KFold_06272320 fold 3 - start training
+[2020-06-28 00:00:49] - lgb_KFold_06272320 fold 3 - end training - score 0.7645044335306509
+[2020-06-28 00:00:52] - lgb_KFold_06272320 fold 4 - start training
+[2020-06-28 00:11:03] - lgb_KFold_06272320 fold 4 - end training - score 0.7350606690569486
+[2020-06-28 00:11:06] - lgb_KFold_06272320 - start prediction cv
+[2020-06-28 00:11:06] - lgb_KFold_06272320 - start prediction fold:0
+[2020-06-28 00:11:16] - lgb_KFold_06272320 - end prediction fold:0
+[2020-06-28 00:11:16] - lgb_KFold_06272320 - start prediction fold:1
+[2020-06-28 00:11:23] - lgb_KFold_06272320 - end prediction fold:1
+[2020-06-28 00:11:23] - lgb_KFold_06272320 - start prediction fold:2
+[2020-06-28 00:11:28] - lgb_KFold_06272320 - end prediction fold:2
+[2020-06-28 00:11:28] - lgb_KFold_06272320 - start prediction fold:3
+[2020-06-28 00:11:36] - lgb_KFold_06272320 - end prediction fold:3
+[2020-06-28 00:11:36] - lgb_KFold_06272320 - start prediction fold:4
+[2020-06-28 00:11:43] - lgb_KFold_06272320 - end prediction fold:4
+[2020-06-28 00:11:43] - lgb_KFold_06272320 - end prediction cv
+[2020-06-28 00:11:43] - lgb_KFold_06272320 - start create submission
+[2020-06-28 00:11:43] - lgb_KFold_06272320 - end create submission

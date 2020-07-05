@@ -4,18 +4,74 @@ import re
 import yaml
 import time
 import unicodedata
+import umap
+import bhtsne
+
 from functools import wraps
 import category_encoders as ce
 from tqdm import tqdm
 from util import Logger
-from bert_sentence_vectorizer import BertSequenceVectorizer
+# from bert_sentence_vectorizer import BertSequenceVectorizer
+from zelkova import cleaning, normalization
+from collections import namedtuple
+from sklearn.feature_extraction.text import TfidfVectorizer
+import MeCab
 tqdm.pandas()
+
+ENABLE_WORD_CLASS_DEF = ['動詞', '名詞', '形容詞']
+BF_WORD_CLASS_DEF = ['動詞']
 
 CONFIG_FILE = '../configs/config.yaml'
 with open(CONFIG_FILE) as file:
     yml = yaml.load(file)
 RAW_DATA_DIR_NAME = yml['SETTING']['RAW_DATA_DIR_NAME']
 FEATURE_DIR_NAME = yml['SETTING']['FEATURE_DIR_NAME']
+
+
+class MeCabTokenizer(object):
+
+    def __init__(self, sys_dic_path='', user_dic_path=''):
+        option = ''
+        if sys_dic_path:
+            option += ' -d {0}'.format(sys_dic_path)
+        if user_dic_path:
+            option += ' -u {0}'.format(user_dic_path)
+        self._t = MeCab.Tagger(option)
+
+    # 品詞によって原型変換するものとしないものを指定できる
+    def wakati_distinguish_part(self, sent, ENABLE_WORD_CLASS=ENABLE_WORD_CLASS_DEF, BF_WORD_CLASS=BF_WORD_CLASS_DEF):
+        words = [token.base_form if (token.base_form != '*') & (token.pos in BF_WORD_CLASS) else token.surface
+                 for token in self.tokenize(sent, ENABLE_WORD_CLASS)]
+        return words
+
+    # 分かち書きした結果の値をそのままreturn
+    def wakati(self, sent, ENABLE_WORD_CLASS=ENABLE_WORD_CLASS_DEF):
+        words = [token.surface for token in self.tokenize(sent, ENABLE_WORD_CLASS)]
+        return words
+
+    # トークナイザ（品詞の制限あり）
+    def tokenize(self, text, ENABLE_WORD_CLASS=ENABLE_WORD_CLASS_DEF):
+        self._t.parse('')
+        chunks = self._t.parse(text.rstrip()).splitlines()[:-1]  # Skip EOS
+
+        # データを格納するだけのクラス宣言
+        # featureのフォーマットは、品詞,品詞細分類1,品詞細分類2,品詞細分類3,活用形,活用型,原形,読み,発音
+        token = namedtuple('Token', 'surface, pos, pos_detail1, pos_detail2, pos_detail3, infl_type, infl_form, base_form, reading, phonetic')
+
+        for chunk in chunks:
+            if chunk == '':
+                continue
+
+            # 特定の品詞のみ抽出する
+            if chunk.split('\t')[1].split(',')[0] not in ENABLE_WORD_CLASS:
+                continue
+
+            # surfaceには分かち書きした後の単語、featureには素性が設定される
+            surface, feature = chunk.split('\t')
+            feature = feature.split(',')
+            if len(feature) <= 7:  # 読みがない
+                feature.extend(['*', '*'])
+            yield token(surface, *feature)
 
 
 def elapsed_time(f):
@@ -81,6 +137,24 @@ def create_day_feature(df, col, prefix):
     return df
 
 
+def preprocessing(text) -> list:
+    """テキストのトークナイズと正規化を行う
+
+    Args:
+        text (str): トークナイズ対象のテキスト
+
+    Returns:
+        list (str): トークナイズ後のlist
+
+    """
+    mecab_tokenizer = MeCabTokenizer(
+                        sys_dic_path='/usr/local/lib/mecab/dic/mecab-ipadic-neologd')
+    text = normalization.normalize(text)
+    text = cleaning.clean_text(text)
+    token = mecab_tokenizer.wakati(text, ENABLE_WORD_CLASS_DEF)
+    return token
+
+
 @elapsed_time
 def get_title(df):
     """titleの特徴量を生成"""
@@ -99,6 +173,20 @@ def get_published(df):
     return df
 
 
+def get_leave_one_out_encoder(df, cols, target):
+    """looエンコード"""
+    ce_loo = ce.LeaveOneOutEncoder(cols=cols).fit_transform(X=df[cols], y=df[target])
+    df[f'loo_encode_{cols}_{target}'] = ce_loo
+    return df
+
+
+def get_catboost_encoder(df, cols, target):
+    """catboostエンコード"""
+    ce_cbe = ce.CatBoostEncoder(cols=cols, random_state=42).fit_transform(X=df[cols], y=df[target])
+    df[f'catboost_encode_{cols}_{target}'] = ce_cbe
+    return df
+
+
 @elapsed_time
 def get_channel(df):
     """channelIdの特徴量を生成"""
@@ -106,6 +194,26 @@ def get_channel(df):
     cols = ['channelId']
     ce_oe = ce.OrdinalEncoder(cols=cols, handle_unknown='impute')
     df[cols] = ce_oe.fit_transform(df[cols])
+
+    # ターゲットエンコーディング
+    df = get_leave_one_out_encoder(df, 'channelId', 'likes')
+    df = get_leave_one_out_encoder(df, 'channelId', 'dislikes')
+    df = get_leave_one_out_encoder(df, 'channelId', 'comment_count')
+    df = get_catboost_encoder(df, 'channelId', 'likes')
+    df = get_catboost_encoder(df, 'channelId', 'dislikes')
+    df = get_catboost_encoder(df, 'channelId', 'comment_count')
+    return df
+
+
+@elapsed_time
+def get_category(df):
+    # ターゲットエンコーディング
+    df = get_leave_one_out_encoder(df, 'categoryId', 'likes')
+    df = get_leave_one_out_encoder(df, 'categoryId', 'dislikes')
+    df = get_leave_one_out_encoder(df, 'categoryId', 'comment_count')
+    df = get_catboost_encoder(df, 'categoryId', 'likes')
+    df = get_catboost_encoder(df, 'categoryId', 'dislikes')
+    df = get_catboost_encoder(df, 'categoryId', 'comment_count')
     return df
 
 
@@ -177,16 +285,53 @@ def get_boolean(df):
 @elapsed_time
 def get_delta(df):
     """日付の差分特徴量を生成"""
-    df['delta'] = (df['collection_date_after'] - df['publishedAt']).apply(lambda x: x.days)
+    df['delta'] = (df['collection_date_after'] - df['publishedAt']).apply(lambda x: x.days)  # 公開されてから収集するまでの日付
     df['delta_log'] = np.log(df['delta'])
     df['delta_sqrt'] = np.sqrt(df['delta'])
-    df['delta_published'] = (df['publishedAt'] - df['publishedAt'].min()).apply(lambda x: x.days)
+    df['delta_published'] = (df['publishedAt'] - df['publishedAt'].min()).apply(lambda x: x.days)  # youtubeができてから公開されるまでの日付
     df['delta_collection'] = (df['collection_date_after'] - df['collection_date_after'].min()).apply(lambda x: x.days)
+
+    # チャンネルごとの継続期間
+    gr_min = df.groupby('channelId')['publishedAt'].min().reset_index().rename(columns={'publishedAt': 'publishedAt_min'})
+    gr_max = df.groupby('channelId')['publishedAt'].max().reset_index().rename(columns={'publishedAt': 'publishedAt_max'})
+    _df = pd.merge(gr_min, gr_max, how='left', on='channelId')
+    df['channel_continue_day'] = (_df['publishedAt_max'] - _df['publishedAt_min']).apply(lambda x: x.days)
+
+    # 月数に換算
+    df['delta_month'] = df['delta'] / 30
+    df['delta_published_month'] = df['delta_published'] / 30
+    df['channel_continue_month'] = df['channel_continue_day'] / 30
 
     # 1日あたりのlike数、dislike数、コメント数
     df['like_per_day'] = df['likes'] / df['delta']
     df['dislike_per_day'] = df['dislikes'] / df['delta']
     df['comment_count_per_day'] = df['comment_count'] / df['delta']
+
+    # 1ヶ月あたりのlike数、dislike数、コメント数
+    df['like_per_month'] = df['likes'] / df['delta_month']
+    df['dislike_per_month'] = df['dislikes'] / df['delta_month']
+    df['comment_count_per_month'] = df['comment_count'] / df['delta_month']
+
+    # youtubeができてからの1日あたりのlike数、dislike数、コメント数
+    df['like_per_published_day'] = df['likes'] / df['delta_published']
+    df['dislike_per_published_day'] = df['dislikes'] / df['delta_published']
+    df['comment_count_per_published_day'] = df['comment_count'] / df['delta_published']
+
+    # youtubeができてからの1ヶ月あたりのlike数、dislike数、コメント数
+    df['like_per_published_month'] = df['likes'] / df['delta_published_month']
+    df['dislike_per_published_month'] = df['dislikes'] / df['delta_published_month']
+    df['comment_count_per_published_month'] = df['comment_count'] / df['delta_published_month']
+
+    # チャンネル開設期間の1日あたりのlike数、dislike数、コメント数
+    df['like_per_channel_continue_day'] = df['likes'] / df['channel_continue_day']
+    df['dislike_per_channel_continue_day'] = df['dislikes'] / df['channel_continue_day']
+    df['comment_count_channel_continue_day'] = df['comment_count'] / df['channel_continue_day']
+
+    # チャンネル開設期間の1ヶ月あたりのlike数、dislike数、コメント数
+    df['like_per_channel_continue_month'] = df['likes'] / df['channel_continue_month']
+    df['dislike_per_channel_continue_month'] = df['dislikes'] / df['channel_continue_month']
+    df['comment_count_channel_continue_month'] = df['comment_count'] / df['channel_continue_month']
+
     return df
 
 
@@ -226,6 +371,81 @@ def get_in_word(df):
     df['in_cm_title'] = df['title'].apply(lambda x: 'cm' in x.lower())
     df['in_cm_tags'] = df['tags'].apply(lambda x: 'cm' in x.lower())
     df['in_cm_description'] = df['description'].apply(lambda x: 'cm' in x.lower())
+    # video
+    df['in_video_title'] = df['title'].apply(lambda x: 'video' in x.lower())
+    df['in_video_tags'] = df['tags'].apply(lambda x: 'video' in x.lower())
+    df['in_video_description'] = df['description'].apply(lambda x: 'video' in x.lower())
+    # song
+    df['in_song_title'] = df['title'].apply(lambda x: 'song' in x.lower())
+    df['in_song_tags'] = df['tags'].apply(lambda x: 'song' in x.lower())
+    df['in_song_description'] = df['description'].apply(lambda x: 'song' in x.lower())
+    # kids
+    df['in_kids_title'] = df['title'].apply(lambda x: 'kids' in x.lower())
+    df['in_kids_tags'] = df['tags'].apply(lambda x: 'kids' in x.lower())
+    df['in_kids_description'] = df['description'].apply(lambda x: 'kids' in x.lower())
+    # アニメ
+    df['in_animeJa_title'] = df['title'].apply(lambda x: 'アニメ' in x.lower())
+    df['in_animeJa_tags'] = df['tags'].apply(lambda x: 'アニメ' in x.lower())
+    df['in_animeJa_description'] = df['description'].apply(lambda x: 'アニメ' in x.lower())
+    # 童話
+    df['in_nursery_title'] = df['title'].apply(lambda x: 'nursery' in x.lower())
+    df['in_nursery_tags'] = df['tags'].apply(lambda x: 'nursery' in x.lower())
+    df['in_nursery_description'] = df['description'].apply(lambda x: 'nursery' in x.lower())
+    df['in_nurseryJa_title'] = df['title'].apply(lambda x: '童話' in x.lower())
+    df['in_nurseryJa_tags'] = df['tags'].apply(lambda x: '童話' in x.lower())
+    df['in_nurseryJa_description'] = df['description'].apply(lambda x: '童話' in x.lower())
+
+    # 芸能人のワードを追加
+    # EXILE
+    df['in_exile_title'] = df['title'].apply(lambda x: 'exile' in x.lower())
+    df['in_exile_tags'] = df['tags'].apply(lambda x: 'exile' in x.lower())
+    df['in_exile_description'] = df['description'].apply(lambda x: 'exile' in x.lower())
+    # 三代目
+    df['in_3rd_title'] = df['title'].apply(lambda x: '三代目' in x.lower())
+    df['in_3rd_tags'] = df['tags'].apply(lambda x: '三代目' in x.lower())
+    df['in_3rd_description'] = df['description'].apply(lambda x: '三代目' in x.lower())
+    # ミスチル
+    df['in_mrchildren_title'] = df['title'].apply(lambda x: 'children' in x.lower())
+    df['in_mrchildren_tags'] = df['tags'].apply(lambda x: 'children' in x.lower())
+    df['in_mrchildren_description'] = df['description'].apply(lambda x: 'children' in x.lower())
+    # ヒカキン
+    df['in_hikakin_title'] = df['title'].apply(lambda x: 'ヒカキン' in x.lower())
+    df['in_hikakin_tags'] = df['tags'].apply(lambda x: 'ヒカキン' in x.lower())
+    df['in_hikakin_description'] = df['description'].apply(lambda x: 'ヒカキン' in x.lower())
+
+    # それぞれの単語が含まれるか否かでカテゴリ化する
+    df.loc[:, 'in_word_music'] = 0
+    df.loc[(df['in_music_title'] == True) | (df['in_music_tags'] == True) |
+           (df['in_music_description'] == True), 'in_word_music'] = 1
+
+    df.loc[:, 'in_word_official'] = 0
+    df.loc[(df['in_ff'] == True) | (df['in_OffChannell'] == True) |
+           (df['in_OffJa'] == True) | (df['in_OffChannellJa'] == True), 'in_word_official'] = 1
+
+    df.loc[:, 'in_word_cm'] = 0
+    df.loc[(df['in_cm_title'] == True) | (df['in_cm_tags'] == True) |
+           (df['in_cm_description'] == True), 'in_word_cm'] = 1
+
+    df.loc[:, 'in_word_video'] = 0
+    df.loc[(df['in_video_title'] == True) | (df['in_video_tags'] == True) |
+           (df['in_video_description'] == True), 'in_word_video'] = 1
+
+    df.loc[:, 'in_word_song'] = 0
+    df.loc[(df['in_song_title'] == True) | (df['in_song_tags'] == True) |
+           (df['in_song_description'] == True), 'in_word_song'] = 1
+
+    df.loc[:, 'in_word_kids'] = 0
+    df.loc[(df['in_kids_title'] == True) | (df['in_kids_tags'] == True) |
+           (df['in_kids_description'] == True), 'in_word_kids'] = 1
+
+    df.loc[:, 'in_word_anime'] = 0
+    df.loc[(df['in_animeJa_title'] == True) | (df['in_animeJa_tags'] == True) |
+           (df['in_animeJa_description'] == True), 'in_word_anime'] = 1
+
+    df.loc[:, 'in_word_nursery'] = 0
+    df.loc[(df['in_animeJa_title'] == True) | (df['in_animeJa_tags'] == True) |
+           (df['in_animeJa_description'] == True), 'in_word_anime'] = 1
+
     return df
 
 
@@ -283,10 +503,6 @@ def get_agg(df, target_col, agg_target_col):
         = df[f'{target_col_name}{agg_target_col}_mean'] - df[f'{target_col_name}{agg_target_col}_q50']
 
     # 自身の値との差分
-    # df[f'{target_col}_{agg_target_col}_mean_diff'] = df[target_col] - df[f'{target_col}_{agg_target_col}_mean']
-    # df[f'{target_col}_{agg_target_col}_max_diff'] = df[target_col] - df[f'{target_col}_{agg_target_col}_max']
-    # df[f'{target_col}_{agg_target_col}_min_diff'] = df[target_col] - df[f'{target_col}_{agg_target_col}_min']
-
     df[f'{target_col_name}{agg_target_col}_mean_diff'] = df[agg_target_col] - df[f'{target_col_name}{agg_target_col}_mean']
     df[f'{target_col_name}{agg_target_col}_max_diff'] = df[agg_target_col] - df[f'{target_col_name}{agg_target_col}_max']
     df[f'{target_col_name}{agg_target_col}_min_diff'] = df[agg_target_col] - df[f'{target_col_name}{agg_target_col}_min']
@@ -296,7 +512,7 @@ def get_agg(df, target_col, agg_target_col):
 
 @elapsed_time
 def get_binning(df):
-    """likesとdislikesをビニング処理する"""
+    """ビニング処理する"""
     # likes
     bin_edges = [-float('inf'), 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, float('inf')]
     _bin = pd.cut(
@@ -315,6 +531,15 @@ def get_binning(df):
     )
     df['dislikes_log_bin'] = _bin.values
 
+    # 収集までのヶ月ごとにbin分割する
+    bin_edges = [-float('inf'), 6, 12, 18, 24, 36, 48, 60, 72, 84, 96, 108, 120, 132, 144, 156, 168, float('inf')]
+    _bin = pd.cut(
+                    df['delta_month'],
+                    bin_edges,
+                    labels=False
+    )
+    df['delta_month_bin'] = _bin.values
+
     return df
 
 
@@ -331,6 +556,9 @@ def get_agg_features(df):
     df = get_agg(df, ['categoryId'], 'likes_comments')
     df = get_agg(df, ['categoryId'], 'dislikes_comments')
     df = get_agg(df, ['categoryId'], 'comments_likes')
+    df = get_agg(df, ['categoryId'], 'like_per_day')
+    df = get_agg(df, ['categoryId'], 'dislike_per_day')
+    df = get_agg(df, ['categoryId'], 'comment_count_per_day')
 
     # channelIdごとの集計特徴量
     df = get_agg(df, ['channelId'], 'likes')
@@ -342,121 +570,269 @@ def get_agg_features(df):
     df = get_agg(df, ['channelId'], 'likes_comments')
     df = get_agg(df, ['channelId'], 'dislikes_comments')
     df = get_agg(df, ['channelId'], 'comments_likes')
+    df = get_agg(df, ['channelId'], 'like_per_day')
+    df = get_agg(df, ['channelId'], 'dislike_per_day')
+    df = get_agg(df, ['channelId'], 'comment_count_per_day')
 
-    # categoryId / channelIdごとの集計特徴量
-    df = get_agg(df, ['categoryId', 'channelId'], 'likes')
-    df = get_agg(df, ['categoryId', 'channelId'], 'dislikes')
-    df = get_agg(df, ['categoryId', 'channelId'], 'comment_count')
-    df = get_agg(df, ['categoryId', 'channelId'], 'delta')
-    df = get_agg(df, ['categoryId', 'channelId'], 'tags_point')
-    df = get_agg(df, ['categoryId', 'channelId'], 'like_dislike_ratio')
-    df = get_agg(df, ['categoryId', 'channelId'], 'likes_comments')
-    df = get_agg(df, ['categoryId', 'channelId'], 'dislikes_comments')
-    df = get_agg(df, ['categoryId', 'channelId'], 'comments_likes')
+    # delta_month_binごとの集計特徴量
+    df = get_agg(df, ['delta_month_bin'], 'likes')
+    df = get_agg(df, ['delta_month_bin'], 'dislikes')
+    df = get_agg(df, ['delta_month_bin'], 'comment_count')
 
-    # likes_log_binごとの集計特徴量
-    df = get_agg(df, ['likes_log_bin'], 'likes')
-    df = get_agg(df, ['likes_log_bin'], 'dislikes')
-    df = get_agg(df, ['likes_log_bin'], 'comment_count')
-    df = get_agg(df, ['likes_log_bin'], 'delta')
-    df = get_agg(df, ['likes_log_bin'], 'tags_point')
-    df = get_agg(df, ['likes_log_bin'], 'like_dislike_ratio')
-    df = get_agg(df, ['likes_log_bin'], 'likes_comments')
-    df = get_agg(df, ['likes_log_bin'], 'dislikes_comments')
-    df = get_agg(df, ['likes_log_bin'], 'comments_likes')
+    # in_word_musicごとの集計特徴量
+    df = get_agg(df, ['in_word_music'], 'likes')
+    df = get_agg(df, ['in_word_music'], 'dislikes')
+    df = get_agg(df, ['in_word_music'], 'comment_count')
 
-    # dislikes_log_binごとの集計特徴量
-    df = get_agg(df, ['dislikes_log_bin'], 'likes')
-    df = get_agg(df, ['dislikes_log_bin'], 'dislikes')
-    df = get_agg(df, ['dislikes_log_bin'], 'comment_count')
-    df = get_agg(df, ['dislikes_log_bin'], 'delta')
-    df = get_agg(df, ['dislikes_log_bin'], 'tags_point')
-    df = get_agg(df, ['dislikes_log_bin'], 'like_dislike_ratio')
-    df = get_agg(df, ['dislikes_log_bin'], 'likes_comments')
-    df = get_agg(df, ['dislikes_log_bin'], 'dislikes_comments')
-    df = get_agg(df, ['dislikes_log_bin'], 'comments_likes')
+    df = get_agg(df, ['in_word_official'], 'likes')
+    df = get_agg(df, ['in_word_official'], 'dislikes')
+    df = get_agg(df, ['in_word_official'], 'comment_count')
+
+    df = get_agg(df, ['in_word_cm'], 'likes')
+    df = get_agg(df, ['in_word_cm'], 'dislikes')
+    df = get_agg(df, ['in_word_cm'], 'comment_count')
+
+    df = get_agg(df, ['in_word_video'], 'likes')
+    df = get_agg(df, ['in_word_video'], 'dislikes')
+    df = get_agg(df, ['in_word_video'], 'comment_count')
+
+    df = get_agg(df, ['in_word_song'], 'likes')
+    df = get_agg(df, ['in_word_song'], 'dislikes')
+    df = get_agg(df, ['in_word_song'], 'comment_count')
+
+    df = get_agg(df, ['in_word_kids'], 'likes')
+    df = get_agg(df, ['in_word_kids'], 'dislikes')
+    df = get_agg(df, ['in_word_kids'], 'comment_count')
+
+    df = get_agg(df, ['in_word_anime'], 'likes')
+    df = get_agg(df, ['in_word_anime'], 'dislikes')
+    df = get_agg(df, ['in_word_anime'], 'comment_count')
+
+    df = get_agg(df, ['in_word_nursery'], 'likes')
+    df = get_agg(df, ['in_word_nursery'], 'dislikes')
+    df = get_agg(df, ['in_word_nursery'], 'comment_count')
+
+    # likes_binごとの集計特徴量
+    # df = get_agg(df, ['likes_log_bin'], 'likes')
+    # df = get_agg(df, ['likes_log_bin'], 'dislikes')
+    # df = get_agg(df, ['likes_log_bin'], 'comment_count')
+    # df = get_agg(df, ['likes_log_bin'], 'delta')
+    # df = get_agg(df, ['likes_log_bin'], 'tags_point')
+    # df = get_agg(df, ['likes_log_bin'], 'like_dislike_ratio')
+    # df = get_agg(df, ['likes_log_bin'], 'likes_comments')
+    # df = get_agg(df, ['likes_log_bin'], 'dislikes_comments')
+    # df = get_agg(df, ['likes_log_bin'], 'comments_likes')
+    # df = get_agg(df, ['likes_log_bin'], 'like_per_day')
+    # df = get_agg(df, ['likes_log_bin'], 'dislike_per_day')
+    # df = get_agg(df, ['likes_log_bin'], 'comment_count_per_day')
+
+    # dislikes_binごとの集計特徴量
+    # df = get_agg(df, ['dislikes_log_bin'], 'likes')
+    # df = get_agg(df, ['dislikes_log_bin'], 'dislikes')
+    # df = get_agg(df, ['dislikes_log_bin'], 'comment_count')
+    # df = get_agg(df, ['dislikes_log_bin'], 'delta')
+    # df = get_agg(df, ['dislikes_log_bin'], 'tags_point')
+    # df = get_agg(df, ['dislikes_log_bin'], 'like_dislike_ratio')
+    # df = get_agg(df, ['dislikes_log_bin'], 'likes_comments')
+    # df = get_agg(df, ['dislikes_log_bin'], 'dislikes_comments')
+    # df = get_agg(df, ['dislikes_log_bin'], 'comments_likes')
+    # df = get_agg(df, ['dislikes_log_bin'], 'like_per_day')
+    # df = get_agg(df, ['dislikes_log_bin'], 'dislike_per_day')
+    # df = get_agg(df, ['dislikes_log_bin'], 'comment_count_per_day')
+
+    # 曜日ごと
+    # df = get_agg(df, ['publishedAt_dayofweek'], 'likes')
+    # df = get_agg(df, ['publishedAt_dayofweek'], 'dislikes')
+    # df = get_agg(df, ['publishedAt_dayofweek'], 'comment_count')
+    # df = get_agg(df, ['publishedAt_dayofweek'], 'delta')
+    # df = get_agg(df, ['publishedAt_dayofweek'], 'tags_point')
+    # df = get_agg(df, ['publishedAt_dayofweek'], 'like_dislike_ratio')
+    # df = get_agg(df, ['publishedAt_dayofweek'], 'likes_comments')
+    # df = get_agg(df, ['publishedAt_dayofweek'], 'dislikes_comments')
+    # df = get_agg(df, ['publishedAt_dayofweek'], 'comments_likes')
+    # df = get_agg(df, ['publishedAt_dayofweek'], 'like_per_day')
+    # df = get_agg(df, ['publishedAt_dayofweek'], 'dislike_per_day')
+    # df = get_agg(df, ['publishedAt_dayofweek'], 'comment_count_per_day')
+
+    # 月ごと
+    # df = get_agg(df, ['publishedAt_month'], 'likes')
+    # df = get_agg(df, ['publishedAt_month'], 'dislikes')
+    # df = get_agg(df, ['publishedAt_month'], 'comment_count')
+    # df = get_agg(df, ['publishedAt_month'], 'delta')
+    # df = get_agg(df, ['publishedAt_month'], 'tags_point')
+    # df = get_agg(df, ['publishedAt_month'], 'like_dislike_ratio')
+    # df = get_agg(df, ['publishedAt_month'], 'likes_comments')
+    # df = get_agg(df, ['publishedAt_month'], 'dislikes_comments')
+    # df = get_agg(df, ['publishedAt_month'], 'comments_likes')
+    # df = get_agg(df, ['publishedAt_month'], 'like_per_day')
+    # df = get_agg(df, ['publishedAt_month'], 'dislike_per_day')
+    # df = get_agg(df, ['publishedAt_month'], 'comment_count_per_day')
 
     # 年/月ごと
     df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'likes')
     df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'dislikes')
     df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'comment_count')
-    df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'delta')
-    df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'tags_point')
-    df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'like_dislike_ratio')
-    df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'likes_comments')
-    df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'dislikes_comments')
-    df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'comments_likes')
-
-    # その月/曜日ごと
-    df = get_agg(df, ['publishedAt_month', 'publishedAt_dayofweek'], 'likes')
-    df = get_agg(df, ['publishedAt_month', 'publishedAt_dayofweek'], 'dislikes')
-    df = get_agg(df, ['publishedAt_month', 'publishedAt_dayofweek'], 'comment_count')
-    df = get_agg(df, ['publishedAt_month', 'publishedAt_dayofweek'], 'delta')
-    df = get_agg(df, ['publishedAt_month', 'publishedAt_dayofweek'], 'tags_point')
-    df = get_agg(df, ['publishedAt_month', 'publishedAt_dayofweek'], 'like_dislike_ratio')
-    df = get_agg(df, ['publishedAt_month', 'publishedAt_dayofweek'], 'likes_comments')
-    df = get_agg(df, ['publishedAt_month', 'publishedAt_dayofweek'], 'dislikes_comments')
-    df = get_agg(df, ['publishedAt_month', 'publishedAt_dayofweek'], 'comments_likes')
+    # df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'delta')
+    # df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'tags_point')
+    # df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'like_dislike_ratio')
+    # df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'likes_comments')
+    # df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'dislikes_comments')
+    # df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'comments_likes')
+    # df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'like_per_day')
+    # df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'dislike_per_day')
+    # df = get_agg(df, ['publishedAt_year', 'publishedAt_month'], 'comment_count_per_day')
 
     return df
 
 
 @elapsed_time
-def get_title_vectorizer(df):
+def get_title_bert_vectorizer(df):
     """BERTからタイトルの文書ベクトルを取得する"""
     BSV = BertSequenceVectorizer()
     title_feature = df['title'].progress_apply(lambda x: BSV.vectorize(x))
     title_feature = pd.DataFrame(title_feature.values.tolist())
     title_feature = title_feature.add_prefix('title_vec')
-    title_feature.to_pickle(FEATURE_DIR_NAME + 'title_vec.pkl')
+    title_feature.to_pickle(FEATURE_DIR_NAME + 'title_bert_vec.pkl')
     # 元のDFと結合
     df = pd.concat([df, title_feature], axis=1)
     return df
 
 
 @elapsed_time
-def get_desc_vectorizer(df):
+def get_desc_bert_vectorizer(df):
     """BERTから説明文の文書ベクトルを取得する"""
     BSV = BertSequenceVectorizer()
     description_feature = df['description'].progress_apply(lambda x: BSV.vectorize(x))
     description_feature = pd.DataFrame(description_feature.values.tolist())
     description_feature = description_feature.add_prefix('description_vec')
-    description_feature.to_pickle(FEATURE_DIR_NAME + 'description_vec.pkl')
+    description_feature.to_pickle(FEATURE_DIR_NAME + 'description_bert_vec.pkl')
     # 元のDFと結合
     df = pd.concat([df, description_feature], axis=1)
     return df
 
 
 @elapsed_time
-def concat_title_vectorizer(df):
-    title_feature = pd.read_pickle(FEATURE_DIR_NAME + 'title_vec.pkl')
+def get_umap(value, col_prefix):
+    """umapで圧縮する"""
+    um = umap.UMAP(n_components=10, random_state=42)
+    _umap = um.fit_transform(value)
+    umap_df = pd.DataFrame(_umap, columns=[f'{col_prefix}_umap1', f'{col_prefix}_umap2', f'{col_prefix}_umap3',
+                                           f'{col_prefix}_umap4', f'{col_prefix}_umap5', f'{col_prefix}_umap6',
+                                           f'{col_prefix}_umap7', f'{col_prefix}_umap8', f'{col_prefix}_umap9',
+                                           f'{col_prefix}_umap10'])
+    return umap_df
+
+
+@elapsed_time
+def get_tsne(value, col_prefix):
+    """t-SNEで圧縮する"""
+    _bhtsne = bhtsne.tsne(value.astype(np.float64), dimensions=2, rand_seed=42)
+    bhtsne_df = pd.DataFrame(_bhtsne, columns=[f'{col_prefix}_tsne1', f'{col_prefix}_tsne2'])
+    return bhtsne_df
+
+
+@elapsed_time
+def get_title_bert_reduction_vectorizer(df):
+    title_vec = pd.read_pickle(FEATURE_DIR_NAME + 'title_bert_vec.pkl')
+    # 圧縮
+    umap_df = get_umap(title_vec, 'title_bert')
+    tsne_df = get_tsne(title_vec, 'title_bert')
+    # 圧縮データを保存
+    umap_df.to_pickle(FEATURE_DIR_NAME + 'title_bert_umap_10d.pkl')
+    tsne_df.to_pickle(FEATURE_DIR_NAME + 'title_bert_tsne_2d.pkl')
+    # 結合
+    df = pd.concat([df, umap_df], axis=1)
+    df = pd.concat([df, tsne_df], axis=1)
+    return df
+
+
+@elapsed_time
+def get_desc_bert_reduction_vectorizer(df):
+    description_vec = pd.read_pickle(FEATURE_DIR_NAME + 'description_bert_vec.pkl')
+    # 圧縮
+    umap_df = get_umap(description_vec, 'description_bert')
+    tsne_df = get_tsne(description_vec, 'description_bert')
+    # 圧縮データを保存
+    umap_df.to_pickle(FEATURE_DIR_NAME + 'description_bert_umap_10d.pkl')
+    tsne_df.to_pickle(FEATURE_DIR_NAME + 'description_bert_tsne_2d.pkl')
+    # 結合
+    df = pd.concat([df, umap_df], axis=1)
+    df = pd.concat([df, tsne_df], axis=1)
+    return df
+
+
+@elapsed_time
+def get_title_tfidf_reduction_vectorizer(df):
+    """TF-IDFからタイトルの文書ベクトルを取得する"""
+    # 分かち書き
+    df.loc[:, 'macab_token'] = df['title'].progress_map(preprocessing)
+    # スペースで結合
+    df.loc[:, 'macab_token'] = [' '.join(doc) for doc in df['macab_token']]
+
+    # TF-IDFの算出
+    token_df = df['macab_token'].values.tolist()
+    tfidf_vec = TfidfVectorizer().fit(token_df)
+    tfidf_vec = tfidf_vec.transform(token_df)
+    # 圧縮
+    umap_df = get_umap(tfidf_vec.toarray(), 'title_tfidf')
+    umap_df.to_pickle(FEATURE_DIR_NAME + 'title_tfidf_umap_10d.pkl')
+    # 結合
+    df = pd.concat([df, umap_df], axis=1)
+    return df
+
+
+@elapsed_time
+def concat_title_bert_vectorizer(df):
+    """タイトルのBERTベクトルを結合"""
+    title_feature = pd.read_pickle(FEATURE_DIR_NAME + 'title_bert_vec.pkl')
     df = pd.concat([df, title_feature], axis=1)
     return df
 
 
 @elapsed_time
-def concat_desc_vectorizer(df):
-    description_feature = pd.read_pickle(FEATURE_DIR_NAME + 'description_vec.pkl')
+def concat_desc_bert_vectorizer(df):
+    """説明文のBERTベクトルを結合"""
+    description_feature = pd.read_pickle(FEATURE_DIR_NAME + 'description_bert_vec.pkl')
     df = pd.concat([df, description_feature], axis=1)
     return df
 
 
 @elapsed_time
-def concat_title_umap_vectorizer(df):
-    umap_df = pd.read_pickle(FEATURE_DIR_NAME + 'title_umap_10d.pkl')
+def concat_title_bert_reduction_vectorizer(df):
+    umap_df = pd.read_pickle(FEATURE_DIR_NAME + 'title_bert_umap_10d.pkl')
+    tsne_df = pd.read_pickle(FEATURE_DIR_NAME + 'title_bert_tsne_2d.pkl')
+    df = pd.concat([df, umap_df], axis=1)
+    df = pd.concat([df, tsne_df], axis=1)
+    return df
+
+
+@elapsed_time
+def concat_desc_bert_reduction_vectorizer(df):
+    umap_df = pd.read_pickle(FEATURE_DIR_NAME + 'description_bert_umap_10d.pkl')
+    tsne_df = pd.read_pickle(FEATURE_DIR_NAME + 'description_bert_tsne_2d.pkl')
+    df = pd.concat([df, umap_df], axis=1)
+    df = pd.concat([df, tsne_df], axis=1)
+    return df
+
+
+@elapsed_time
+def concat_title_tfidf_reduction_vectorizer(df):
+    umap_df = pd.read_pickle(FEATURE_DIR_NAME + 'title_tfidf_umap_10d.pkl')
     df = pd.concat([df, umap_df], axis=1)
     return df
 
 
 @elapsed_time
-def concat_description_umap_vectorizer(df):
-    umap_df = pd.read_pickle(FEATURE_DIR_NAME + 'description_umap_10d.pkl')
+def concat_desc_tfidf_reduction_vectorizer(df):
+    umap_df = pd.read_pickle(FEATURE_DIR_NAME + 'description_tfidf_umap_10d.pkl')
     df = pd.concat([df, umap_df], axis=1)
     return df
 
 
 @elapsed_time
-def main(create_title_vec, create_desc_vec, create_title_umap):
+def main(create_title_bert_vec, create_desc_bert_vec,
+         create_title_bert_reduction, create_desc_bert_reduction,
+         create_title_tfidf_reduction_vec):
 
     logger.info_log('★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆')
 
@@ -470,6 +846,8 @@ def main(create_title_vec, create_desc_vec, create_title_umap):
     df = get_published(df)
     # channel
     df = get_channel(df)
+    # category
+    df = get_category(df)
     # collection_date
     df = get_collection(df)
     # tag
@@ -496,28 +874,34 @@ def main(create_title_vec, create_desc_vec, create_title_umap):
     df = get_agg_features(df)
 
     # titleの文章ベクトルをBERTから取得
-    if create_title_vec:
-        df = get_title_vectorizer(df)
+    if create_title_bert_vec:
+        df = get_title_bert_vectorizer(df)
     else:
-        df = concat_title_vectorizer(df)
-
+        # df = concat_title_bert_vectorizer(df)
+        pass
     # descriptionの文章ベクトルをBERTから取得
-    if create_desc_vec:
-        df = get_desc_vectorizer(df)
+    if create_desc_bert_vec:
+        df = get_desc_bert_vectorizer(df)
     else:
-        df = concat_desc_vectorizer(df)
-
-    # titleの特徴量をUMAPで圧縮したデータを取得
-    if create_title_umap:
+        # df = concat_desc_bert_vectorizer(df)
         pass
-    else:
-        df = concat_title_umap_vectorizer(df)
 
-    # descriptionの特徴量をUMAPで圧縮したデータを取得
-    if create_title_umap:
-        pass
+    # titleの特徴量（BERT）を圧縮したデータを取得
+    if create_title_bert_reduction:
+        df = get_title_bert_reduction_vectorizer(df)
     else:
-        df = concat_description_umap_vectorizer(df)
+        df = concat_title_bert_reduction_vectorizer(df)
+    # description（BERT）の特徴量を圧縮したデータを取得
+    if create_desc_bert_reduction:
+        df = get_desc_bert_reduction_vectorizer(df)
+    else:
+        df = concat_desc_bert_reduction_vectorizer(df)
+
+    # titleの特徴量（TF-IDF）を圧縮したデータを取得
+    if create_title_tfidf_reduction_vec:
+        df = get_title_tfidf_reduction_vectorizer(df)
+    else:
+        df = concat_title_tfidf_reduction_vectorizer(df)
 
     # trainとtestに分割
     train = df.iloc[:len(train), :]
@@ -547,4 +931,9 @@ if __name__ == "__main__":
     logger = Logger()
 
     # 全部の特徴量を作る場合はすべてTrueで実行する
-    main(create_title_vec=False, create_desc_vec=False, create_title_umap=False)
+    main(create_title_bert_vec=False,
+         create_desc_bert_vec=False,
+         create_title_bert_reduction=False,
+         create_desc_bert_reduction=False,
+         create_title_tfidf_reduction_vec=False
+         )

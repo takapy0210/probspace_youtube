@@ -55,7 +55,7 @@ class youtube_Runner(Runner):
             # =================================
             """
             # pseudo labelingデータを追加する
-            pseudo_df = pd.read_pickle(self.feature_dir_name + 'test_pseudo_06231123.pkl')
+            pseudo_df = pd.read_pickle(self.feature_dir_name + 'test_pseudo_06232319.pkl')
             pseudo_df_x = pseudo_df.drop('y', axis=1)[self.features]
             pseudo_df_y = np.log1p(pseudo_df[self.target])
             # 結合
@@ -134,9 +134,6 @@ class youtube_Runner(Runner):
             model, va_idx, va_pred, score = self.train_fold(i_fold)
             self.logger.info(f'{self.run_name} fold {i_fold} - end training - score {score}')
 
-            # mlflowでトラッキング
-            # mlflow.log_metric(f'fold {i_fold}', score)
-
             # モデルを保存する
             model.save_model(self.out_dir_name)
 
@@ -156,10 +153,6 @@ class youtube_Runner(Runner):
             score_all_data = np.sqrt(self.metrics(np.expm1(self.train_y), preds))
         else:
             score_all_data = None
-
-        # mlflowでトラッキング
-        # mlflow.log_metric('score_all_data', score_all_data)
-        # mlflow.log_metric('score_fold_mean', np.mean(scores))
 
         # oofデータに対するfoldごとのscoreをcsvに書き込む（foldごとに分析する用）
         self.score_list.append(['score_all_data', score_all_data])
@@ -220,6 +213,21 @@ class youtube_Runner(Runner):
 
         self.logger.info(f'{self.run_name} - end prediction cv')
 
+    def load_x_train(self) -> pd.DataFrame:
+        """学習データの特徴量を読み込む
+        列名で抽出する以上のことを行う場合、このメソッドの修正が必要
+        :return: 学習データの特徴量
+        """
+        df = pd.read_pickle(self.feature_dir_name + f'{self.train_file_name}')
+
+        # 特定のサンプルを除外して学習させる場合 -----------
+        self.remove_train_index = df[(df[self.target] >= 599999999)].index
+        df = df.drop(index=self.remove_train_index)
+
+        df = df[self.features]
+
+        return df
+
     def load_y_train(self) -> pd.Series:
         """学習データの目的変数を読み込む
         対数変換や使用するデータを削除する場合には、このメソッドの修正が必要
@@ -228,7 +236,6 @@ class youtube_Runner(Runner):
         df = pd.read_pickle(self.feature_dir_name + f'{self.train_file_name}')
 
         # 特定のサンプルを除外して学習させる場合 -------------
-        # df = df.drop(index=self.remove_train_index)
-        # -----------------------------------------
+        df = df.drop(index=self.remove_train_index)
 
         return pd.Series(np.log1p(df[self.target]))

@@ -1,0 +1,28 @@
+[2020-06-27 02:15:42] - lgb_KFold_06270215 - train_x shape: (19720, 502)
+[2020-06-27 02:15:42] - lgb_KFold_06270215 - train_y shape: (19720,)
+[2020-06-27 02:15:42] - lgb_KFold_06270215 - start training cv
+[2020-06-27 02:15:42] - lgb_KFold_06270215 - cv method: KFold
+[2020-06-27 02:15:42] - lgb_KFold_06270215 fold 0 - start training
+[2020-06-27 02:19:51] - lgb_KFold_06270215 fold 0 - end training - score 0.7681969314455881
+[2020-06-27 02:19:55] - lgb_KFold_06270215 fold 1 - start training
+[2020-06-27 02:23:31] - lgb_KFold_06270215 fold 1 - end training - score 0.736285803321285
+[2020-06-27 02:23:34] - lgb_KFold_06270215 fold 2 - start training
+[2020-06-27 02:27:18] - lgb_KFold_06270215 fold 2 - end training - score 0.703572105186396
+[2020-06-27 02:27:21] - lgb_KFold_06270215 fold 3 - start training
+[2020-06-27 02:33:44] - lgb_KFold_06270215 fold 3 - end training - score 0.7328670816879196
+[2020-06-27 02:33:49] - lgb_KFold_06270215 fold 4 - start training
+[2020-06-27 02:38:26] - lgb_KFold_06270215 fold 4 - end training - score 0.7092609737542475
+[2020-06-27 02:38:30] - lgb_KFold_06270215 - start prediction cv
+[2020-06-27 02:38:31] - lgb_KFold_06270215 - start prediction fold:0
+[2020-06-27 02:38:40] - lgb_KFold_06270215 - end prediction fold:0
+[2020-06-27 02:38:40] - lgb_KFold_06270215 - start prediction fold:1
+[2020-06-27 02:38:44] - lgb_KFold_06270215 - end prediction fold:1
+[2020-06-27 02:38:44] - lgb_KFold_06270215 - start prediction fold:2
+[2020-06-27 02:38:49] - lgb_KFold_06270215 - end prediction fold:2
+[2020-06-27 02:38:49] - lgb_KFold_06270215 - start prediction fold:3
+[2020-06-27 02:38:58] - lgb_KFold_06270215 - end prediction fold:3
+[2020-06-27 02:38:58] - lgb_KFold_06270215 - start prediction fold:4
+[2020-06-27 02:39:03] - lgb_KFold_06270215 - end prediction fold:4
+[2020-06-27 02:39:03] - lgb_KFold_06270215 - end prediction cv
+[2020-06-27 02:39:03] - lgb_KFold_06270215 - start create submission
+[2020-06-27 02:39:03] - lgb_KFold_06270215 - end create submission
