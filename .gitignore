@@ -300,3 +300,4 @@ $RECYCLE.BIN/
 *.zip
 .ipynb_checkpoints
 !_features_memo.csv
+notebooks/
